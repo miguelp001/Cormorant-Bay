@@ -1,7 +1,7 @@
 'use strict';
 
 const name = 'CormorantBay';
-const version = '0.6.0';
+const version = '0.8.0';
 const cacheName = `${name}-v${version}`;
 
 const files = [
@@ -18,7 +18,35 @@ const files = [
 	'./js/script.js',
 	'./assets/icons/icon-192.png',
 	'./assets/icons/icon-512.png',
-	'./assets/icons/icon-maskable.png'
+	'./assets/icons/icon-maskable.png',
+
+	// Background Scenes
+	'./assets/images/backgrounds/bg_ferry_interior.svg',
+	'./assets/images/backgrounds/bg_dock.svg',
+	'./assets/images/backgrounds/bg_diner.svg',
+	'./assets/images/backgrounds/bg_house.svg',
+	'./assets/images/backgrounds/bg_office.svg',
+	'./assets/images/backgrounds/bg_motel.svg',
+	'./assets/images/backgrounds/bg_church.svg',
+	'./assets/images/backgrounds/bg_point.svg',
+	'./assets/images/backgrounds/bg_darkroom.svg',
+	'./assets/images/backgrounds/bg_shed_ext.svg',
+	'./assets/images/backgrounds/bg_cannery_ext.svg',
+	'./assets/images/backgrounds/bg_graveyard.svg',
+
+	// Character Portraits
+	'./assets/images/characters/vance.svg',
+	'./assets/images/characters/nora.svg',
+	'./assets/images/characters/toby.svg',
+	'./assets/images/characters/creel.svg',
+	'./assets/images/characters/kell.svg',
+	'./assets/images/characters/price.svg',
+
+	// Audio
+	'./assets/audio/music/mus_rain_loop.wav',
+	'./assets/audio/music/mus_guitar_theme.wav',
+	'./assets/audio/sfx/sfx_roll.wav',
+	'./assets/audio/sfx/sfx_ui_click.wav'
 ];
 
 self.addEventListener('install', (event) => {

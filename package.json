@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dist --port 5173",
     "build --dev": "vite dist --port 5173",
-    "build": "vite build",
+    "build": "vite build dist",
     "test": "node test/check.js"
   },
   "devDependencies": {

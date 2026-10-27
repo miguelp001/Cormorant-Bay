@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="charGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4c3268" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#0e1114" stop-opacity="0.95" />
+    </linearGradient>
+  </defs>
+  <!-- Character Torso Silhouette -->
+  <path d="M 220,1100 L 260,720 Q 400,640 540,720 L 580,1100 Z" fill="url(#charGrad)" />
+  <!-- Head Silhouette -->
+  <circle cx="400" cy="500" r="140" fill="url(#charGrad)" />
+  <line x1="400" y1="680" x2="400" y2="820" stroke="#e9d5ff" stroke-width="8" /><line x1="360" y1="720" x2="440" y2="720" stroke="#e9d5ff" stroke-width="8" />
+</svg>

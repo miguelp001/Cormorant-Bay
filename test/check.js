@@ -234,4 +234,53 @@ assert(domStore['dossier-heat-status'].textContent.includes('Noticed'), 'Dossier
 assert(domStore['dossier-conviction-pips'].innerHTML.includes('Spent'), 'Dossier renders spent conviction pip');
 
 console.log('Verified Journal rendering of held clues, dual readings, suspect cases, and Alana\'s dossier.');
-console.log('All Milestone 6 tests passed successfully!');
+
+console.log('--- Section 4: Milestones 7 & 8 Assets & PWA Verification ---');
+
+// 1. Verify Service Worker file existence and cache array
+const swContent = fs.readFileSync('dist/service-worker.js', 'utf8');
+const versionMatch = swContent.match(/const version = '([^']+)';/);
+assert(versionMatch && versionMatch[1] === '0.8.0', 'Service worker version must be bumped to 0.8.0');
+
+const filesMatch = swContent.match(/const files = \[([\s\S]*?)\];/);
+assert(filesMatch, 'Service worker must declare files array');
+const fileEntries = filesMatch[1]
+	.split('\n')
+	.map(line => line.trim())
+	.filter(line => line.startsWith("'./") || line.startsWith('"./'))
+	.map(line => line.replace(/['",]/g, '').replace(/^\.\//, 'dist/'));
+
+for (const f of fileEntries) {
+	if (f === 'dist/' || f === 'dist') continue;
+	assert(fs.existsSync(f), `Asset in service worker files array must exist on disk: ${f}`);
+}
+console.log(`Verified all ${fileEntries.length} service worker cache assets exist on disk.`);
+
+// 2. Verify all background scenes and audio referenced in script.js
+const scriptText = fs.readFileSync('dist/js/script.js', 'utf8');
+const sceneMatches = [...scriptText.matchAll(/show scene ([a-z_0-9]+)/g)].map(m => m[1]);
+const uniqueScenes = [...new Set(sceneMatches)];
+for (const sceneKey of uniqueScenes) {
+	const expectedBgFile = `dist/assets/images/backgrounds/bg_${sceneKey}.svg`;
+	assert(fs.existsSync(expectedBgFile), `Background asset file for scene "${sceneKey}" must exist: ${expectedBgFile}`);
+}
+console.log(`Verified all ${uniqueScenes.length} scenes referenced in script.js map to real background SVGs.`);
+
+const musicMatches = [...scriptText.matchAll(/play music ([a-z_0-9]+)/g)].map(m => m[1]);
+const uniqueMusic = [...new Set(musicMatches)];
+for (const track of uniqueMusic) {
+	assert(['rain', 'guitar'].includes(track), `Music track "${track}" must be registered in options.js`);
+}
+console.log(`Verified all music commands (${uniqueMusic.join(', ')}) are registered.`);
+
+// 3. Verify PWA Manifest
+const manifestRaw = fs.readFileSync('dist/manifest.json', 'utf8');
+const manifest = JSON.parse(manifestRaw);
+assert.strictEqual(manifest.display, 'standalone', 'PWA manifest display must be standalone');
+assert.strictEqual(manifest.orientation, 'portrait', 'PWA manifest orientation must be portrait');
+assert(manifest.icons.some(i => i.sizes === '192x192'), 'PWA manifest must include 192x192 icon');
+assert(manifest.icons.some(i => i.sizes === '512x512' && !i.purpose), 'PWA manifest must include standard 512x512 icon');
+assert(manifest.icons.some(i => i.purpose === 'maskable'), 'PWA manifest must include maskable icon');
+console.log('Verified PWA manifest meets install criteria.');
+
+console.log('All Milestone 7 & 8 tests passed successfully!');

@@ -244,6 +244,8 @@ monogatari.script({
 	// 1. THE FERRY PROLOGUE (Day 1 Morning)
 	// =========================================================================
 	'Start': [
+		'show scene ferry_interior with fadeIn',
+		'play music rain loop',
 		'y Rain drums a steady, deadened rhythm against the salt-crusted glass of the passenger salon.',
 		'y Below the floorboards, two diesel engines churn through the cold chop of the sound. Outside, the water is the color of wet slate.',
 		'y Six years since you last took this crossing. You left with two bags and an acceptance letter to a city paper; your father stood on the dock until the wake washed over his boots, refusing to wave.',
@@ -301,7 +303,9 @@ monogatari.script({
 	// 2. THE DOCKS ARRIVAL (Day 1 Morning)
 	// =========================================================================
 	'arrival_dock': [
+		'show scene dock with fadeIn',
 		'y The ferry thuds against the creosote pilings with a shudder that rattles your teeth.',
+		'show character toby default with fadeIn',
 		'y Out on the wet boards of the dock, a young man catches the bow line. He can\'t be more than nineteen, wearing an oversized woolen sweater soaked dark at the shoulders.',
 		'y Toby Rook. You remember him at six years old, sitting on your father\'s porch step on August afternoons, swinging his legs and drinking lemonade from a jelly jar.',
 		'y He secures the hawser around the iron cleat. When he straightens, his knuckles are scraped red and his hands tremble visibly.',
@@ -350,6 +354,7 @@ monogatari.script({
 	],
 
 	'arrival_walk': [
+		'hide character toby with fadeOut',
 		'y Rain slicks the wooden planks of Commercial Street. Half the storefronts are shuttered: marine supply, tackle shop, an empty bait dock.',
 		'y At the bend where the street climbs toward the timber ridge, steam fogs the wide front windows of Nora\'s Diner.',
 		'jump nora_diner'
@@ -359,6 +364,8 @@ monogatari.script({
 	// 3. NORA\'S DINER (Day 1 Midday)
 	// =========================================================================
 	'nora_diner': [
+		'show scene diner with fadeIn',
+		'show character nora default with fadeIn',
 		'y The bell above the diner door gives a dull tin chime. The interior smells of bacon grease, bleach, and decades of woodstove ash.',
 		'y Behind the counter, a woman with grey-streaked copper hair stops wiping a laminate tabletop. Nora Vane. Your mother\'s closest friend.',
 		'nora "Alana."',
@@ -435,6 +442,7 @@ monogatari.script({
 	],
 
 	'nora_leave': [
+		'hide character nora with fadeOut',
 		'y You take the key. Outside, the rain turns heavy, beating hard against the asphalt as you begin the climb toward Eli\'s ridge.',
 		'jump house_arrival'
 	],
@@ -443,6 +451,7 @@ monogatari.script({
 	// 4. ELI\'S HOUSE INVESTIGATION (Day 1 Afternoon)
 	// =========================================================================
 	'house_arrival': [
+		'show scene house with fadeIn',
 		'y Eli\'s house sits at the end of an unpaved lane choked with blackberry briars.',
 		'y The cedar shake is black with water. Brown industrial packing tape covers every pane of glass on the ground floor, cross-hatched in tight grids.',
 		'y The brass key turns with a dry, grinding scrape. The door opens into chill, damp air that smells of wet paper, darkroom vinegar, and unwashed wool.',
@@ -453,6 +462,7 @@ monogatari.script({
 	],
 
 	'house_hub': [
+		'show scene house with fadeIn',
 		{
 			'Choice': {
 				'Desk': {
@@ -522,6 +532,7 @@ monogatari.script({
 	],
 
 	'dark_find': [
+		'show scene darkroom with fadeIn',
 		'{{dark_roll_line}}',
 		'y The bathroom has been converted into a darkroom: black plastic taped over the vent, pungent smell of fixer and stop bath.',
 		'y Clipped to a plastic wire above the bathtub are three glossy 8x10 prints, still curled at the corners.',
@@ -534,6 +545,7 @@ monogatari.script({
 	],
 
 	'dark_fail': [
+		'show scene darkroom with fadeIn',
 		'{{dark_roll_line}}',
 		'y You fumble in the dark, your elbow catching a glass bottle of stop bath. It shatters in the tub with an acrid splash of vinegar that burns your eyes.',
 		'y The drying prints are overexposed or fogged by light leaks. When you swab them with a rag, the silver emulsion smears into black streaks.',
@@ -545,6 +557,7 @@ monogatari.script({
 	],
 
 	'shed_find': [
+		'show scene shed_ext with fadeIn',
 		'{{shed_roll_line}}',
 		'y You plant your boot against the weathered siding, throw your weight into the crowbar, and the corroded iron hasp shears off with a dull thud.',
 		'y Inside, hanging from a rafter, is an industrial pair of heavy steel bolt cutters with rubber grips.',
@@ -559,6 +572,7 @@ monogatari.script({
 	],
 
 	'shed_fail': [
+		'show scene shed_ext with fadeIn',
 		'{{shed_roll_line}}',
 		'y The rusted hasp pinches your fingers against wet iron. The metal screeches loud enough to carry across the gulley, but the padlock refuses to budge.',
 		{
@@ -623,6 +637,8 @@ monogatari.script({
 	// 5. THE SHERIFF\'S OFFICE (Day 1 Late Afternoon)
 	// =========================================================================
 	'sheriff_arrival': [
+		'show scene office with fadeIn',
+		'show character vance default with fadeIn',
 		'y The Sheriff\'s Office occupies a concrete annex beside the municipal fire hall.',
 		'y Fluorescent lights hum with an insect drone. Sheriff Ruth Vance sits behind a metal desk stacked with county circulars and state patrol logs.',
 		'y Thirty-one years on the job. Her uniform is pressed, her holster worn at the seam, her eyes grey and profoundly tired.',
@@ -780,6 +796,8 @@ monogatari.script({
 	// 6. THE MOTEL & DAY 1 NIGHT (Milestone 3 Opening)
 	// =========================================================================
 	'motel_night': [
+		'hide character vance with fadeOut',
+		'show scene motel with fadeIn',
 		'y Room 4 of the Cormorant Motel smells of damp carpet and cedar smoke.',
 		'y The walls are thin enough that you can hear the rain running in the copper gutters outside.',
 		'y On the white visitor registration slip, your reason for coming is recorded: "{{visitReasonLabel}}"',
@@ -804,6 +822,8 @@ monogatari.script({
 	],
 
 	'toby_night_pass': [
+		'show scene dock with fadeIn',
+		'show character toby default with fadeIn',
 		'{{toby_night_roll_line}}',
 		'y The wind off the sound is needle-sharp, but you pull your collar tight and walk steady along the wet planks.',
 		'y Toby sits on an overturned fish tote, his sodden hood pulled low over his eyes. His sleeves are soaked through, his knees drawn up to his chest.',
@@ -867,6 +887,8 @@ monogatari.script({
 	// 7. DAY TWO: CANNERY EXTERIOR & INVESTIGATION
 	// =========================================================================
 	'day2_morning': [
+		'hide character toby with fadeOut',
+		'show scene motel with fadeIn',
 		'y Tuesday morning breaks the color of dirty pewter.',
 		'y The rain hasn\'t stopped; it has merely thinned into a relentless coastal mizzle that hangs in the air like smoke.',
 		'y You leave the motel and take the gravel road out along the western spit toward the shuttered cannery on the point.',
@@ -874,6 +896,8 @@ monogatari.script({
 	],
 
 	'cannery_exterior': [
+		'show scene cannery_ext with fadeIn',
+		'stop music with fade 2',
 		'y The cannery is a sprawl of rusted corrugated steel and rotted pilings. Gulls scream from the ridge poles.',
 		'y Behind the main processing shed stretches the high chain-link enclosure Eli photographed.',
 		'y The double gates at the rear are secured with a heavy logging chain.',
@@ -960,6 +984,9 @@ monogatari.script({
 	// 8. DAY TWO: TOBY\'S TESTIMONY & DOYLE PRICE
 	// =========================================================================
 	'day2_docks_toby': [
+		'show scene dock with fadeIn',
+		'play music rain loop',
+		'show character toby default with fadeIn',
 		'y Back at the commercial slips, the afternoon tide has brought in two crab boats.',
 		'y Toby is stacking crushed ice crates on the dock apron. His hands are still bandaged, but his breath is steadier.',
 		{
@@ -1005,6 +1032,8 @@ monogatari.script({
 	],
 
 	'price_dock_scene': [
+		'hide character toby with fadeOut',
+		'show character price default with fadeIn',
 		'y Fifty yards down the pier, an old green Ford flatbed is parked with its hood up. A man in grease-stained coveralls is cursing at an alternator.',
 		'y Doyle Price. Fifty-five, thick-necked, smelling of sour beer and two-stroke oil.',
 		'y Beside the tailgate sits a pair of heavy rubber work boots caked with grey clay from the point.',
@@ -1082,6 +1111,10 @@ monogatari.script({
 	// 9. DAY TWO EVENING: DINNER AT THE DINER (Heat Reduction)
 	// =========================================================================
 	'nora_dinner_scene': [
+		'hide character price with fadeOut',
+		'show scene diner with fadeIn',
+		'play music rain loop',
+		'show character nora default with fadeIn',
 		'y Evening falls over Cormorant Bay. The neon sign of the diner buzzes red in the fog.',
 		'y Inside, the stove is roaring. Nora brings over a steaming bowl of black cod chowder and a thick slice of buttered bread.',
 		'nora "Sit down, Alana. You look like you\'ve been walking in the salt all day."',
@@ -1140,6 +1173,9 @@ monogatari.script({
 	// 10. DAY THREE: MERRITT KELL CONFRONTATION
 	// =========================================================================
 	'day3_morning': [
+		'hide character nora with fadeOut',
+		'show scene office with fadeIn',
+		'show character kell default with fadeIn',
 		'y Wednesday morning. The funeral is set for two o\'clock in the churchyard.',
 		'y At ten, you walk into the cannery company office at the foot of Commercial Street.',
 		'y Merritt Kell is reviewing shipping manifests. Tailored wool jacket, silvering hair, impeccably polished shoes. He looks up with a practiced, radiant smile.',
@@ -1215,6 +1251,10 @@ monogatari.script({
 	// 11. DAY THREE AFTERNOON: THE FUNERAL
 	// =========================================================================
 	'funeral_scene': [
+		'hide character kell with fadeOut',
+		'show scene graveyard with fadeIn',
+		'play music guitar loop',
+		'show character creel default with fadeIn',
 		'y At two o\'clock, a dozen townsfolk gather on the wet hillside behind Saint Jude in the Pines.',
 		'y The raw earth beside your mother\'s headstone is covered in fake green turf. Rain taps hollow against the black umbrellas.',
 		'y Pastor Abel Creel stands at the head of the grave. Tall, stooped, wearing vestments frayed at the cuffs. His hands tremble as he holds the open prayer book.',
@@ -1274,6 +1314,9 @@ monogatari.script({
 	// 12. DAY THREE LATE AFTERNOON: VANCE\'S DRAWER
 	// =========================================================================
 	'vance_drawer_scene': [
+		'hide character creel with fadeOut',
+		'show scene office with fadeIn',
+		'play music rain loop',
 		'y Four in the afternoon. A timber truck has overturned on the causeway highway; the siren atop the fire hall wails, and Vance and her deputy speed out in their cruisers.',
 		'y The sheriff\'s office is deserted. The door latch is on the latch; through the glass, the desk sits vacant under the fluorescent hum.',
 		'y The locked bottom drawer is right there.',
@@ -1348,6 +1391,7 @@ monogatari.script({
 	// 13. DAY THREE NIGHT: MOTEL (ACT ONE END)
 	// =========================================================================
 	'night_day3': [
+		'show scene motel with fadeIn',
 		'y Night falls on Wednesday. The rain has gathered into a black gale off the Pacific, thrashing the motel roof.',
 		'y You spread your notebook across the bed in Room 4.',
 		'y Eli\'s complaint letter. The photograph of the run. The gate opened from the outside. The muddy boot prints. The sealed confessions.',
@@ -1361,6 +1405,8 @@ monogatari.script({
 	// 14. ACT TWO (DAY 4): THE CHURCH REVEAL
 	// =========================================================================
 	'day4_church': [
+		'show scene church with fadeIn',
+		'show character creel default with fadeIn',
 		'y Thursday morning. Cormorant Bay has pulled into itself like a snail behind an iron shell.',
 		'y Heavy storm shutters are battened over the lower windows of every house along the road.',
 		'y At Saint Jude in the Pines, the arched oak door stands unlocked. Inside, cold damp air smells of tallow candles and old cedar.',
@@ -1424,6 +1470,8 @@ monogatari.script({
 	// 15. ACT THREE (DAY 5): THE MOON & THE ATTACK
 	// =========================================================================
 	'day5_thursday_start': [
+		'hide character creel with fadeOut',
+		'stop music with fade 2',
 		'y Thursday night. The full moon climbs above the jagged ridge, burning silver through ragged tears in the storm clouds.',
 		'y Outside, the rain has stopped. The absolute silence across Cormorant Bay is deafening — no cars, no dogs, no voices.',
 		function () {
@@ -1436,6 +1484,7 @@ monogatari.script({
 	],
 
 	'day5_attack': [
+		'show scene motel with fadeIn',
 		'y In Room 4 of the motel, the lights suddenly flicker and die with a high electrical whine.',
 		'y The silence is shattered by the explosive crash of splintering glass in the bathroom.',
 		'y A blast of freezing air and wet timber smell fills the dark room. In the hallway doorway, a massive silhouette blocks the light from the moon.',
@@ -1536,6 +1585,7 @@ monogatari.script({
 	],
 
 	'day5_point_wolf': [
+		'show scene point with fadeIn',
 		'{{point_moon_roll_line}}',
 		'y You slip through the trees along the western spit. Under the silver flood of the moon, you reach the cannery fence.',
 		'y Behind the chain link, an eight-foot shape paces the mud. Grey-black fur, ribcage expanding in deep, ragged breaths.',
@@ -1549,6 +1599,7 @@ monogatari.script({
 	],
 
 	'day5_point_blur': [
+		'show scene point with fadeIn',
 		'{{point_moon_roll_line}}',
 		'y Fog rolls across the spit, blinding your flashlight. You hear heavy panting and the rattle of wire, but see only thrashing shadows.',
 		'y A cannery floodlight snaps on; a siren gives two short blasts from the cannery office.',
@@ -1586,6 +1637,8 @@ monogatari.script({
 	],
 
 	'day5_vigil': [
+		'show scene church with fadeIn',
+		'show character creel default with fadeIn',
 		'y You spend the night in Saint Jude in the Pines. Candles flicker on the altar.',
 		'y Creel kneels in the center aisle, whispering prayers of absolution into the empty church.',
 		'y You sit in the rear pew, keeping watch while the hours tick past. There is no violence here, only shared sorrow.',
@@ -1597,6 +1650,7 @@ monogatari.script({
 	],
 
 	'day5_stay': [
+		'show scene motel with fadeIn',
 		'y You barricade the motel door with a chair and sit beneath the lamp with your coat on.',
 		'y Around two in the morning, a long, low howl echoes from the bluffs above the town. It isn\'t a dog.',
 		'y You sit in the dark until the dawn begins to grey the window panes.',
@@ -1610,6 +1664,9 @@ monogatari.script({
 	// 16. ACT FOUR (DAY 6): THE ACCUSATION MATRIX & ENDINGS
 	// =========================================================================
 	'day6_morning': [
+		'hide character creel with fadeOut',
+		'show scene dock with fadeIn',
+		'play music rain loop',
 		'y Friday morning. The low horn of the ferry vibrates across the grey water of Cormorant Bay.',
 		'y Down at the commercial pier, the town has gathered in the light drizzle: Ruth Vance in uniform, Nora with her hands tucked in her coat, Merritt Kell standing by his car, Doyle Price leaning against his flatbed, and Pastor Creel standing beside Toby Rook.',
 		'y The gangway is down. The diesel engines rumble in idle.',
@@ -1689,6 +1746,7 @@ monogatari.script({
 	// TOBY ROOK ENDINGS
 	// -------------------------------------------------------------------------
 	'toby_thin': [
+		'show character toby default with fadeIn',
 		'y "It was Toby Rook," you say, your voice cutting through the mist. "He\'s what killed my father."',
 		'y Silence falls over the pier. Nobody gasps. Nobody even argues.',
 		'y Nora steps quietly in front of the boy, placing her hand on his trembling shoulder. Ruth Vance doesn\'t even reach for her pen.',
@@ -1699,6 +1757,7 @@ monogatari.script({
 	],
 
 	'ending_toby_partial': [
+		'show character toby default with fadeIn',
 		'y You step forward and lay out your pieces: the telephoto photo of the wire run and Eli\'s moon calendar.',
 		'y "He was in the run," you say. "Six days every month."',
 		'y Vance takes the papers. Her face goes entirely bloodless. She looks at Creel, then turns slowly to Toby.',
@@ -1710,6 +1769,7 @@ monogatari.script({
 	],
 
 	'accuse_toby_full_fork': [
+		'show character toby default with fadeIn',
 		'y You present the complete, airtight case: the photograph of the beast, the circled calendar, and Pastor Creel\'s testimony.',
 		'y The truth is laid out on the salt-stained wood. The town stands paralyzed.',
 		'y Toby stares down at his boots, weeping silently. Nora looks at you with terror in her eyes. Creel bows his head in prayer.',
@@ -1745,6 +1805,7 @@ monogatari.script({
 	],
 
 	'ending_mercy': [
+		'play music guitar loop',
 		'y You look down at the open notebook. You see Toby\'s childhood lemonade glass, Nora\'s warm soup, Creel\'s kneeling prayers.',
 		'y You close the cover. You slide the pen into your pocket.',
 		'y "My father died of an animal attack in the woods," you say clearly to the gathered crowd. "Just like the coroner wrote."',
@@ -1758,6 +1819,7 @@ monogatari.script({
 	// DOYLE PRICE ENDINGS
 	// -------------------------------------------------------------------------
 	'price_thin': [
+		'show character price default with fadeIn',
 		'y "Doyle Price killed him," you tell Vance. "He was at the house."',
 		'price "You\'re full of rot, lady! I was drinking at the tavern!"',
 		'y Without tire tracks or boot evidence, Vance shakes her head: "Doyle\'s a drunk, Alana, not a murderer. Get on the boat."',
@@ -1767,6 +1829,7 @@ monogatari.script({
 	],
 
 	'price_partial': [
+		'show character price default with fadeIn',
 		'y You produce Toby\'s testimony and the sighting of Price\'s green flatbed at the point.',
 		'y Price turns red, sputtering curses: "I opened the gate because Kell paid me! I never touched the old bastard!"',
 		'y Vance snaps the cuffs on him: "Manslaughter and reckless endangerment, Doyle. Let\'s go."',
@@ -1776,6 +1839,7 @@ monogatari.script({
 	],
 
 	'ending_price_full': [
+		'show character price default with fadeIn',
 		'y You lay out the truck timeline, the fresh clay on his boots, and the tampered cannery latch.',
 		'y An airtight case. The town turns on Doyle with ferocious, relieved fury. Vance arrests him on the dock.',
 		'y Four years later, in your city apartment, an envelope arrives postmarked from the state penitentiary.',
@@ -1788,6 +1852,7 @@ monogatari.script({
 	// MERRITT KELL ENDINGS
 	// -------------------------------------------------------------------------
 	'kell_thin': [
+		'show character kell default with fadeIn',
 		'y You point at Merritt Kell: "He arranged it to silence the health board complaint!"',
 		'kell "A tragic, defamatory accusation from a grieving daughter," Kell sighs smoothly.',
 		'y Vance shakes her head and waves you up the gangway. Kell sips his coffee and winks as the boat pulls away.',
@@ -1796,6 +1861,7 @@ monogatari.script({
 	],
 
 	'ending_kell_partial': [
+		'show character kell default with fadeIn',
 		'y You present Eli\'s carbon copy complaint and the evidence of the tampered cannery gate.',
 		'y The county opens an investigation into municipal zoning and industrial lease safety. Kell\'s cannery operations are suspended by court order.',
 		'y The cannery closes. Forty families in Cormorant Bay lose their livelihood before winter.',
@@ -1805,6 +1871,7 @@ monogatari.script({
 	],
 
 	'ending_kell_full': [
+		'show character kell default with fadeIn',
 		'y You present the carbon complaint letter, the tampered gate, and Kell\'s recorded verbal threat.',
 		'y Faced with direct criminal conspiracy, the state attorney general indicts Kell on felony endangerment and criminal negligence causing death.',
 		'y Kell takes a three-year plea deal to avoid a public trial. He spends eighteen months in a minimum-security facility.',
@@ -1817,6 +1884,7 @@ monogatari.script({
 	// PASTOR ABEL CREEL ENDINGS
 	// -------------------------------------------------------------------------
 	'creel_thin': [
+		'show character creel default with fadeIn',
 		'y "Pastor Creel is responsible!" you declare. "He sheltered the killer!"',
 		'y The town turns on you in cold disgust. Nora steps back with a look of revulsion.',
 		'y "Abel Creel has buried our dead for forty years," an old fisherman mutters. "Shame on you, Alana."',
@@ -1826,6 +1894,7 @@ monogatari.script({
 	],
 
 	'creel_partial': [
+		'show character creel default with fadeIn',
 		'y You reveal Vance\'s nervous admissions and Creel\'s secret visits to the cannery run.',
 		'y A parish scandal explodes across the diocese. The bishop revokes Creel\'s holy orders; Saint Jude in the Pines is shuttered and deconsecrated.',
 		'y Creel leaves Cormorant Bay on a grey bus, clutching an old suitcase with his head bowed.',
@@ -1834,6 +1903,7 @@ monogatari.script({
 	],
 
 	'ending_creel_ruin': [
+		'show character creel default with fadeIn',
 		'y You present the audio confession log, Vance\'s admission, and Creel\'s own spoken testimony.',
 		'y The evidence is inescapable. Faced with the tape, Pastor Creel refuses to utter Toby Rook\'s name. Instead, he steps forward and falsely claims sole responsibility: he bred vicious animals on church land and failed to secure them.',
 		'y He confesses to manslaughter to shield the boy from the law. He is defrocked, convicted, and sentenced to ten years.',
@@ -1846,6 +1916,7 @@ monogatari.script({
 	// NOBODY / WALK AWAY ENDINGS
 	// -------------------------------------------------------------------------
 	'ending_leave': [
+		'show scene ferry_interior with fadeIn',
 		'y You close the notebook. You don\'t say a word.',
 		'y You hand your ticket to the deckhand, walk up the metal gangway, and stand at the stern rail as the engines throb.',
 		'y The town shrinks into the mist — pine, salt, and black cedar shingles.',
@@ -1855,6 +1926,7 @@ monogatari.script({
 	],
 
 	'leave_partial': [
+		'show scene ferry_interior with fadeIn',
 		'y You walk up the gangway without a word, holding your partial notes in your pocket.',
 		'y In the city, you spend three months drafting a 10,000-word investigative piece for the magazine.',
 		'y The legal department reviews it, demands named on-record sources that you don\'t possess, and kills the article.',
@@ -1864,6 +1936,7 @@ monogatari.script({
 	],
 
 	'leave_full': [
+		'show scene ferry_interior with fadeIn',
 		'y You keep your silence on the dock, but when you return to the mainland, you publish everything: the photographs, the gate, the letters, the moon clock.',
 		'y The story explodes on the front page. A state commission descends upon Cormorant Bay with search warrants and cameras.',
 		'y They scour the point. They inspect the empty cannery and the chain-link run.',
