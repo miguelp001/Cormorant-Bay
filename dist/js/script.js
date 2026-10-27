@@ -1681,6 +1681,9 @@ monogatari.script({
 				'AccuseToby': {
 					'Text': 'Name Toby Rook as the beast that killed your father.',
 					'Do': function () {
+						if (hasClue(this, 'saw_the_wolf')) {
+							return 'jump accuse_toby_saw_wolf';
+						}
 						const tier = evidenceAgainst(this, 'toby');
 						if (tier === 3) {
 							return 'jump accuse_toby_full_fork';
@@ -1766,6 +1769,17 @@ monogatari.script({
 		'y You board the ferry as two state patrol cruisers arrive down the hill. You did the right thing, and everyone in Cormorant Bay will hate you for the rest of your life.',
 		'y Ending 5: Arrested underprepared. He goes quietly. Relief in his face, which is worse.',
 		'end'
+	],
+
+	'accuse_toby_saw_wolf': [
+		'show character toby default with fadeIn',
+		'y You step forward to the edge of the dock. You don\'t open the notebook. You look straight into Toby\'s hollow, terrified eyes.',
+		'y "I saw you last night," you say. Your voice carries clearly across the water, steady and quiet.',
+		'y "I saw what was pacing behind the cannery wire under the full moon. I saw your eyes in the dark."',
+		'y The silence that falls over the pier is absolute. Nobody speaks. Nora lets out a choked sob; Vance closes her eyes in surrender.',
+		'y Toby drops to his knees on the wet cedar planks, burying his face in his hands.',
+		'toby "I never wanted him to die, Alana... I never wanted any of it..."',
+		'jump accuse_toby_full_fork'
 	],
 
 	'accuse_toby_full_fork': [

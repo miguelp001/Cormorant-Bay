@@ -134,6 +134,15 @@ for (const endLabel of all11Endings) {
 	assert(script[endLabel], `Ending label "${endLabel}" must exist`);
 	assert(Array.isArray(script[endLabel]) && script[endLabel].length > 0, `Ending label "${endLabel}" must contain narrative content`);
 }
+// Verify saw_the_wolf payoff routing
+resetStorage();
+clue(mockEngine, 'saw_the_wolf');
+const tobyAccuseTarget = accuseChoice.AccuseToby.Do.call(mockEngine);
+assert.strictEqual(tobyAccuseTarget, 'jump accuse_toby_saw_wolf', 'Holding saw_the_wolf jumps to accuse_toby_saw_wolf');
+assert(script.accuse_toby_saw_wolf, 'accuse_toby_saw_wolf label exists');
+assert(script.accuse_toby_saw_wolf.includes('jump accuse_toby_full_fork'), 'accuse_toby_saw_wolf routes to full resolution fork');
+console.log('Verified saw_the_wolf accusation payoff route.');
+
 console.log(`Verified all ${all11Endings.length} endings from DESIGN.md §8.1.`);
 
 console.log('--- Section 3: Milestone 6 Systems UI & Clue Journal ---');
