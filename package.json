@@ -8,7 +8,8 @@
     "build --dev": "vite dist --port 5173",
     "build": "vite build dist",
     "test": "node test/check.js",
-    "simulate": "node test/simulate.js"
+    "simulate": "node test/simulate.js",
+    "deploy": "python scripts/deploy.py"
   },
   "devDependencies": {
     "vite": "^5.4.0"
