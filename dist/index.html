@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Cormorant Bay</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1">
+	<meta name="theme-color" content="#1A1D21">
+	<meta name="description" content="A stat-driven mystery visual novel set in Cormorant Bay">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	<link rel="manifest" href="manifest.json">
+
+	<!-- Monogatari Core CSS -->
+	<link rel="stylesheet" href="./engine/core/monogatari.css">
+	<!-- Project Stylesheet -->
+	<link rel="stylesheet" href="./style/main.css">
+
+	<!-- Monogatari Engine -->
+	<script src="./engine/core/monogatari.js"></script>
+
+	<!-- Game Modules -->
+	<script src="./js/options.js"></script>
+	<script src="./js/landing-card.js"></script>
+	<script src="./js/script.js"></script>
+	<script src="./js/main.js"></script>
+</head>
+<body>
+	<noscript>
+		<div class="middle text--center">
+			<h2>JavaScript Disabled or Not Supported</h2>
+			<small>To play Cormorant Bay, please enable JavaScript.</small>
+		</div>
+	</noscript>
+
+	<!-- Diegetic Landing Card Overlay (Prologue Visitor Registration) -->
+	<div id="landing-card-overlay" class="landing-card-overlay" style="display: none;">
+		<div class="landing-card-modal">
+			<header class="landing-card-header">
+				<div class="header-seal">TOWN OF CORMORANT BAY</div>
+				<h2>VISITOR REGISTRATION</h2>
+				<p class="header-sub">Port Authority &bull; Form 4-B &bull; Keep folded with boarding receipt</p>
+			</header>
+
+			<form id="landing-card-form" class="landing-card-body" onsubmit="return false;">
+				<div class="form-row form-locked-row">
+					<div class="form-group half">
+						<label for="visitor-name">NAME</label>
+						<input type="text" id="visitor-name" value="Alana Taylor" readonly>
+					</div>
+					<div class="form-group half">
+						<label for="visitor-stay">LENGTH OF STAY</label>
+						<input type="text" id="visitor-stay" value="Six days" readonly>
+					</div>
+				</div>
+
+				<div class="form-section">
+					<label class="section-label">REASON FOR VISIT</label>
+					<div class="radio-options">
+						<label class="radio-label">
+							<input type="radio" name="visitReason" value="bury" checked>
+							<span class="radio-custom"></span>
+							<span class="radio-text">Burying my father.</span>
+						</label>
+						<label class="radio-label">
+							<input type="radio" name="visitReason" value="write">
+							<span class="radio-custom"></span>
+							<span class="radio-text">Writing about the town.</span>
+						</label>
+						<label class="radio-label">
+							<input type="radio" name="visitReason" value="both">
+							<span class="radio-custom"></span>
+							<span class="radio-text">Both.</span>
+						</label>
+					</div>
+				</div>
+
+				<div class="form-section skills-section">
+					<div class="skills-header">
+						<label class="section-label">SKILLS AND TRADE</label>
+						<div class="points-budget">
+							Points remaining: <strong id="skills-remaining-count">4</strong>
+						</div>
+					</div>
+					<p class="section-hint">Each skill starts at 1 (max 3). Distribute exactly 4 points.</p>
+
+					<div class="steppers-grid">
+						<div class="skill-stepper" data-skill="perception">
+							<div class="skill-info">
+								<span class="skill-name">Perception</span>
+								<small class="skill-desc">Searching, noticing, details</small>
+							</div>
+							<div class="stepper-controls">
+								<button type="button" class="btn-step btn-minus" data-action="minus" data-skill="perception">-</button>
+								<span class="skill-val" id="val-perception">1</span>
+								<button type="button" class="btn-step btn-plus" data-action="plus" data-skill="perception">+</button>
+							</div>
+						</div>
+
+						<div class="skill-stepper" data-skill="empathy">
+							<div class="skill-info">
+								<span class="skill-name">Empathy</span>
+								<small class="skill-desc">Reading motive, comfort</small>
+							</div>
+							<div class="stepper-controls">
+								<button type="button" class="btn-step btn-minus" data-action="minus" data-skill="empathy">-</button>
+								<span class="skill-val" id="val-empathy">1</span>
+								<button type="button" class="btn-step btn-plus" data-action="plus" data-skill="empathy">+</button>
+							</div>
+						</div>
+
+						<div class="skill-stepper" data-skill="persuasion">
+							<div class="skill-info">
+								<span class="skill-name">Persuasion</span>
+								<small class="skill-desc">Gaining cooperation, access</small>
+							</div>
+							<div class="stepper-controls">
+								<button type="button" class="btn-step btn-minus" data-action="minus" data-skill="persuasion">-</button>
+								<span class="skill-val" id="val-persuasion">1</span>
+								<button type="button" class="btn-step btn-plus" data-action="plus" data-skill="persuasion">+</button>
+							</div>
+						</div>
+
+						<div class="skill-stepper" data-skill="grit">
+							<div class="skill-info">
+								<span class="skill-name">Grit</span>
+								<small class="skill-desc">Enduring, not flinching, night</small>
+							</div>
+							<div class="stepper-controls">
+								<button type="button" class="btn-step btn-minus" data-action="minus" data-skill="grit">-</button>
+								<span class="skill-val" id="val-grit">1</span>
+								<button type="button" class="btn-step btn-plus" data-action="plus" data-skill="grit">+</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-footer">
+					<button type="button" id="landing-card-confirm" class="btn-confirm-card" disabled>
+						Fold &amp; File Registration
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="monogatari">
+		<visual-novel>
+			<loading-screen></loading-screen>
+			<main-screen>
+				<main-menu></main-menu>
+			</main-screen>
+			<game-screen>
+				<dialog-log></dialog-log>
+				<text-box></text-box>
+				<quick-menu></quick-menu>
+			</game-screen>
+			<gallery-screen></gallery-screen>
+			<credits-screen></credits-screen>
+			<load-screen></load-screen>
+			<save-screen></save-screen>
+			<settings-screen></settings-screen>
+			<help-screen></help-screen>
+		</visual-novel>
+	</div>
+</body>
+</html>

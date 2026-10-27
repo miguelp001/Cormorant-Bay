@@ -1,0 +1,303 @@
+/**
+ * Cormorant Bay — Main Theme Stylesheet
+ * Tone: Rainy, melancholy, paranoid
+ */
+
+:root {
+	--bg-dark: #121417;
+	--bg-card: #1c2026;
+	--bg-paper: #e5e0d3;
+	--ink-dark: #1e1b18;
+	--ink-muted: #534c44;
+	--accent-gold: #c29b62;
+	--accent-red: #8f3434;
+	--border-subtle: #2d333b;
+	--text-primary: #e6edf3;
+	--text-secondary: #8b949e;
+}
+
+body {
+	background-color: var(--bg-dark);
+	color: var(--text-primary);
+	font-family: Georgia, 'Times New Roman', serif;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+/* Custom Roll Math Box */
+.roll-display-box {
+	display: block;
+	margin: 10px 0;
+	padding: 10px 14px;
+	background: rgba(18, 20, 23, 0.85);
+	border-left: 3px solid var(--accent-gold);
+	border-radius: 2px;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 0.9em;
+	color: #d1d5db;
+	letter-spacing: 0.02em;
+}
+
+.roll-display-box.roll-success {
+	border-left-color: #4ade80;
+}
+
+.roll-display-box.roll-fail {
+	border-left-color: #f87171;
+}
+
+/* ==========================================================================
+   DIEGETIC LANDING CARD OVERLAY
+   ========================================================================== */
+
+.landing-card-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(10, 12, 15, 0.85);
+	backdrop-filter: blur(4px);
+	z-index: 9999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px;
+	box-sizing: border-box;
+}
+
+.landing-card-modal {
+	background: var(--bg-paper);
+	color: var(--ink-dark);
+	width: 100%;
+	max-width: 440px;
+	max-height: 94vh;
+	overflow-y: auto;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 0, 0, 0.3);
+	border-radius: 3px;
+	padding: 24px 20px;
+	box-sizing: border-box;
+	border: 1px solid #c9c3b5;
+	position: relative;
+}
+
+/* Vintage card styling */
+.landing-card-header {
+	text-align: center;
+	border-bottom: 2px solid var(--ink-dark);
+	padding-bottom: 12px;
+	margin-bottom: 18px;
+}
+
+.header-seal {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	font-size: 0.68rem;
+	letter-spacing: 0.2em;
+	font-weight: 700;
+	color: var(--ink-muted);
+	margin-bottom: 4px;
+}
+
+.landing-card-header h2 {
+	margin: 0;
+	font-size: 1.35rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+.header-sub {
+	margin: 4px 0 0;
+	font-size: 0.75rem;
+	color: var(--ink-muted);
+	font-style: italic;
+}
+
+/* Form inputs */
+.form-row {
+	display: flex;
+	gap: 12px;
+	margin-bottom: 14px;
+}
+
+.form-group {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+.form-group label, .section-label {
+	font-size: 0.7rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-muted);
+	margin-bottom: 4px;
+}
+
+.form-locked-row input {
+	background: #ded7c6;
+	border: 1px solid #b5ae9d;
+	color: var(--ink-dark);
+	font-family: inherit;
+	font-size: 0.95rem;
+	padding: 6px 8px;
+	border-radius: 2px;
+	font-style: italic;
+}
+
+.form-section {
+	margin-bottom: 18px;
+	border-top: 1px dashed #b5ae9d;
+	padding-top: 12px;
+}
+
+/* Radio options */
+.radio-options {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 6px;
+}
+
+.radio-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+	font-size: 0.92rem;
+	padding: 4px 0;
+}
+
+.radio-label input[type="radio"] {
+	accent-color: var(--ink-dark);
+	cursor: pointer;
+}
+
+/* Skills steppers */
+.skills-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+}
+
+.points-budget {
+	font-size: 0.82rem;
+	font-weight: 600;
+	background: #d4ccb9;
+	padding: 2px 8px;
+	border-radius: 2px;
+	border: 1px solid #bcb4a0;
+}
+
+.section-hint {
+	margin: 2px 0 10px;
+	font-size: 0.74rem;
+	color: var(--ink-muted);
+	font-style: italic;
+}
+
+.steppers-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.skill-stepper {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background: #ded8c9;
+	padding: 8px 10px;
+	border-radius: 3px;
+	border: 1px solid #c4bdae;
+}
+
+.skill-info {
+	display: flex;
+	flex-direction: column;
+}
+
+.skill-name {
+	font-weight: bold;
+	font-size: 0.95rem;
+}
+
+.skill-desc {
+	font-size: 0.72rem;
+	color: var(--ink-muted);
+}
+
+.stepper-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.btn-step {
+	width: 28px;
+	height: 28px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #eee8db;
+	border: 1px solid #776e62;
+	color: var(--ink-dark);
+	font-weight: bold;
+	font-size: 1.1rem;
+	cursor: pointer;
+	border-radius: 2px;
+	user-select: none;
+	touch-action: manipulation;
+}
+
+.btn-step:active:not(:disabled) {
+	background: #bcb4a0;
+}
+
+.btn-step:disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+	border-color: #aaa292;
+}
+
+.skill-val {
+	font-size: 1.1rem;
+	font-weight: bold;
+	min-width: 18px;
+	text-align: center;
+}
+
+/* Confirm Button */
+.form-footer {
+	margin-top: 20px;
+	border-top: 2px solid var(--ink-dark);
+	padding-top: 14px;
+	text-align: center;
+}
+
+.btn-confirm-card {
+	width: 100%;
+	padding: 12px;
+	font-family: inherit;
+	font-size: 1rem;
+	font-weight: bold;
+	letter-spacing: 0.05em;
+	background: var(--ink-dark);
+	color: var(--bg-paper);
+	border: none;
+	cursor: pointer;
+	border-radius: 2px;
+	transition: background 0.2s;
+}
+
+.btn-confirm-card:hover:not(:disabled) {
+	background: #383430;
+}
+
+.btn-confirm-card:disabled {
+	background: #878175;
+	cursor: not-allowed;
+	opacity: 0.6;
+}

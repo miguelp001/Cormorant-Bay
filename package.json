@@ -1,0 +1,15 @@
+{
+  "name": "cormorant-bay",
+  "version": "0.1.0",
+  "description": "A stat-driven mystery visual novel set in Cormorant Bay",
+  "private": true,
+  "scripts": {
+    "dev": "vite dist --port 5173",
+    "build --dev": "vite dist --port 5173",
+    "build": "vite build",
+    "test": "node test/check.js"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}
