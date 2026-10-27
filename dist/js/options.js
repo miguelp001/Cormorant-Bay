@@ -67,18 +67,18 @@ monogatari.preferences({
 
 // Scene Background Assets
 monogatari.assets('scenes', {
-	'ferry_interior': 'bg_ferry_interior.svg',
-	'dock': 'bg_dock.svg',
-	'diner': 'bg_diner.svg',
-	'house': 'bg_house.svg',
-	'office': 'bg_office.svg',
-	'motel': 'bg_motel.svg',
-	'church': 'bg_church.svg',
-	'point': 'bg_point.svg',
-	'darkroom': 'bg_darkroom.svg',
-	'shed_ext': 'bg_shed_ext.svg',
-	'cannery_ext': 'bg_cannery_ext.svg',
-	'graveyard': 'bg_graveyard.svg'
+	'ferry_interior': 'bg_ferry_interior.jpg',
+	'dock': 'bg_dock.jpg',
+	'diner': 'bg_diner.jpg',
+	'house': 'bg_house.jpg',
+	'office': 'bg_office.jpg',
+	'motel': 'bg_motel.jpg',
+	'church': 'bg_church.jpg',
+	'point': 'bg_point.jpg',
+	'darkroom': 'bg_darkroom.jpg',
+	'shed_ext': 'bg_shed_ext.jpg',
+	'cannery_ext': 'bg_cannery_ext.jpg',
+	'graveyard': 'bg_graveyard.jpg'
 });
 
 // Music & Audio Bed

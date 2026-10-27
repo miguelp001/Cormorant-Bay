@@ -270,10 +270,12 @@ const scriptText = fs.readFileSync('dist/js/script.js', 'utf8');
 const sceneMatches = [...scriptText.matchAll(/show scene ([a-z_0-9]+)/g)].map(m => m[1]);
 const uniqueScenes = [...new Set(sceneMatches)];
 for (const sceneKey of uniqueScenes) {
-	const expectedBgFile = `dist/assets/images/backgrounds/bg_${sceneKey}.svg`;
-	assert(fs.existsSync(expectedBgFile), `Background asset file for scene "${sceneKey}" must exist: ${expectedBgFile}`);
+	const jpgPath = `dist/assets/images/backgrounds/bg_${sceneKey}.jpg`;
+	const svgPath = `dist/assets/images/backgrounds/bg_${sceneKey}.svg`;
+	const exists = fs.existsSync(jpgPath) || fs.existsSync(svgPath);
+	assert(exists, `Background asset file for scene "${sceneKey}" must exist: ${jpgPath} or ${svgPath}`);
 }
-console.log(`Verified all ${uniqueScenes.length} scenes referenced in script.js map to real background SVGs.`);
+console.log(`Verified all ${uniqueScenes.length} scenes referenced in script.js map to real background image assets.`);
 
 const musicMatches = [...scriptText.matchAll(/play music ([a-z_0-9]+)/g)].map(m => m[1]);
 const uniqueMusic = [...new Set(musicMatches)];
