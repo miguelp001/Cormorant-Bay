@@ -1,7 +1,7 @@
 /**
  * Cormorant Bay — script.js
  * Mechanics Helpers and Narrative Script
- * Milestone 2: The Ferry Prologue, Docks Arrival, Nora's Diner, Eli's House, Sheriff's Office, Motel Act Break.
+ * Milestones 1, 2 & 3: Prologue through Act One (Days 1–3).
  */
 
 'use strict';
@@ -235,13 +235,13 @@ window.evidenceAgainst = evidenceAgainst;
 window.confirmLandingCard = confirmLandingCard;
 
 // =============================================================================
-// Monogatari Narrative Script: Milestone 2
+// Monogatari Narrative Script: Milestones 1, 2 & 3
 // =============================================================================
 
 monogatari.script({
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	// 1. THE FERRY PROLOGUE (Day 1 Morning)
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	'Start': [
 		'y Rain drums a steady, deadened rhythm against the salt-crusted glass of the passenger salon.',
 		'y Below the floorboards, two diesel engines churn through the cold chop of the sound. Outside, the water is the color of wet slate.',
@@ -296,9 +296,9 @@ monogatari.script({
 		'jump arrival_dock'
 	],
 
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	// 2. THE DOCKS ARRIVAL (Day 1 Morning)
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	'arrival_dock': [
 		'y The ferry thuds against the creosote pilings with a shudder that rattles your teeth.',
 		'y Out on the wet boards of the dock, a young man catches the bow line. He can\'t be more than nineteen, wearing an oversized woolen sweater soaked dark at the shoulders.',
@@ -354,9 +354,9 @@ monogatari.script({
 		'jump nora_diner'
 	],
 
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	// 3. NORA\'S DINER (Day 1 Midday)
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	'nora_diner': [
 		'y The bell above the diner door gives a dull tin chime. The interior smells of bacon grease, bleach, and decades of woodstove ash.',
 		'y Behind the counter, a woman with grey-streaked copper hair stops wiping a laminate tabletop. Nora Vane. Your mother\'s closest friend.',
@@ -438,9 +438,9 @@ monogatari.script({
 		'jump house_arrival'
 	],
 
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	// 4. ELI\'S HOUSE INVESTIGATION (Day 1 Afternoon)
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	'house_arrival': [
 		'y Eli\'s house sits at the end of an unpaved lane choked with blackberry briars.',
 		'y The cedar shake is black with water. Brown industrial packing tape covers every pane of glass on the ground floor, cross-hatched in tight grids.',
@@ -497,7 +497,6 @@ monogatari.script({
 		}
 	],
 
-	// --- Node 1: The Desk ---
 	'desk_find': [
 		'{{desk_roll_line}}',
 		'y You pry the jammed drawer until it slides on swollen runners. Under a stack of water-damaged power bills lies a carbon copy on yellowed legal stock.',
@@ -521,7 +520,6 @@ monogatari.script({
 		}
 	],
 
-	// --- Node 2: The Darkroom ---
 	'dark_find': [
 		'{{dark_roll_line}}',
 		'y The bathroom has been converted into a darkroom: black plastic taped over the vent, pungent smell of fixer and stop bath.',
@@ -545,7 +543,6 @@ monogatari.script({
 		}
 	],
 
-	// --- Node 3: The Shed (Gate Check DC 11) ---
 	'shed_find': [
 		'{{shed_roll_line}}',
 		'y You plant your boot against the weathered siding, throw your weight into the crowbar, and the corroded iron hasp shears off with a dull thud.',
@@ -621,9 +618,9 @@ monogatari.script({
 		'jump sheriff_arrival'
 	],
 
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	// 5. THE SHERIFF\'S OFFICE (Day 1 Late Afternoon)
-	// -------------------------------------------------------------------------
+	// =========================================================================
 	'sheriff_arrival': [
 		'y The Sheriff\'s Office occupies a concrete annex beside the municipal fire hall.',
 		'y Fluorescent lights hum with an insect drone. Sheriff Ruth Vance sits behind a metal desk stacked with county circulars and state patrol logs.',
@@ -778,18 +775,585 @@ monogatari.script({
 		}
 	],
 
-	// -------------------------------------------------------------------------
-	// 6. THE MOTEL ACT BREAK (Day 1 Night)
-	// -------------------------------------------------------------------------
+	// =========================================================================
+	// 6. THE MOTEL & DAY 1 NIGHT (Milestone 3 Opening)
+	// =========================================================================
 	'motel_night': [
 		'y Room 4 of the Cormorant Motel smells of damp carpet and cedar smoke.',
-		'y The walls are thin enough that you can hear the rain running in the copper gutters outside and the steady murmur of the television in the manager\'s office.',
-		'y You drop your coat on the armchair and unpack your notebook on the laminate table under the brass lamp.',
+		'y The walls are thin enough that you can hear the rain running in the copper gutters outside.',
 		'y On the white visitor registration slip, your reason for coming is recorded: "{{visitReasonLabel}}"',
-		'y You look up into the spotted mirror above the dresser.',
-		'y The reflection looking back is tired, pale, and carrying six years of silence that you never got to break with your father.',
-		'y But the town is awake around you. In the dark beyond the window, rain blankets the sound, and the point sits out on the water like a closed fist.',
-		'y Day One is over.',
+		'y You look out through the condensation on the window. Far below, through the rain, a lone halogen bulb burns at the end of the commercial dock.',
+		'y A silhouette sits alone on the pier in the pouring dark.',
+		{
+			'Choice': {
+				'GoDocks': {
+					'Text': 'Walk down to the commercial dock in the dark. (Grit — freezing rain and wind, DC 9)',
+					'Do': function () {
+						const r = roll(this, 'grit', 9);
+						this.storage('toby_night_roll_line', rollLine(r));
+						return r.success ? 'jump toby_night_pass' : 'jump toby_night_fail';
+					}
+				},
+				'StayInRoom': {
+					'Text': 'Lock the deadbolt and stay inside for the night.',
+					'Do': 'jump day2_morning'
+				}
+			}
+		}
+	],
+
+	// --- Toby Dock Scene at Night (Invariant §5.7: the only path to trust.toby +1) ---
+	'toby_night_pass': [
+		'{{toby_night_roll_line}}',
+		'y The wind off the sound is needle-sharp, but you pull your collar tight and walk steady along the wet planks.',
+		'y Toby sits on an overturned fish tote, his sodden hood pulled low over his eyes. His sleeves are soaked through, his knees drawn up to his chest.',
+		'y You don\'t pull out the notebook. You sit beside him on the wet timber, leaving two feet between your shoulders.',
+		'y Five minutes pass in silence, the black water slapping the pilings beneath your boots.',
+		'toby "He didn\'t suffer long, Alana."',
+		'y His voice is a cracked whisper in the wind.',
+		'toby "I swear on my mother\'s grave. It was fast. He... he never even dropped his flashlight."',
+		'y He looks at you sideways, terrified you will scream at him. When you remain still, he exhales a shuddering breath.',
+		function () {
+			trustUp(this, 'toby', 1);
+			return 'jump day2_morning';
+		}
+	],
+
+	'toby_night_fail': [
+		'{{toby_night_roll_line}}',
+		'y The freezing squall catches your breath. You stumble on a loose cleat, your flashlight beam swinging wild across the harbor.',
+		'y Toby bolts upright like a startled animal. Before you can speak, a yellow spotlight snaps on from the harbormaster\'s shack.',
+		'y "Who\'s down on the slip at this hour? Clear off the pier!"',
+		'y Toby vanishes into the shadow between the bait sheds. You retreat up the hill with rain stinging your eyes.',
+		function () {
+			heat(this, 1);
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Circle back through the stacks. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump toby_night_reroll';
+					}
+				},
+				'Stop': {
+					'Text': 'Head back to the motel.',
+					'Do': 'jump day2_morning'
+				}
+			}
+		}
+	],
+
+	'toby_night_reroll': [
+		'y You duck beneath the net racks, ignoring the freezing spray, and track his breath in the dark.',
+		function () {
+			const r = rerollWithConviction(this, 'grit', 9);
+			this.storage('toby_night_roll_line', rollLine(r));
+			return r.success ? 'jump toby_night_pass' : 'jump toby_night_lost';
+		}
+	],
+
+	'toby_night_lost': [
+		'{{toby_night_roll_line}}',
+		'y Toby is already gone. You hear a door slam somewhere in the dark, then only the pounding tide.',
+		'jump day2_morning'
+	],
+
+	// =========================================================================
+	// 7. DAY TWO: CANNERY EXTERIOR & INVESTIGATION
+	// =========================================================================
+	'day2_morning': [
+		'y Tuesday morning breaks the color of dirty pewter.',
+		'y The rain hasn\'t stopped; it has merely thinned into a relentless coastal mizzle that hangs in the air like smoke.',
+		'y You leave the motel and take the gravel road out along the western spit toward the shuttered cannery on the point.',
+		'jump cannery_exterior'
+	],
+
+	'cannery_exterior': [
+		'y The cannery is a sprawl of rusted corrugated steel and rotted pilings. Gulls scream from the ridge poles.',
+		'y Behind the main processing shed stretches the high chain-link enclosure Eli photographed.',
+		'y The double gates at the rear are secured with a heavy logging chain.',
+		{
+			'Choice': {
+				'Cutters': {
+					'Text': 'Use Eli\'s heavy bolt cutters to inspect the chain link up close.',
+					'Condition': function () {
+						return P(this).hasCutters;
+					},
+					'Do': 'jump cannery_cutters_pass'
+				},
+				'Perception': {
+					'Text': 'Examine the gate and latch from the tree line. (Perception — look for recent signs of passage, DC 9)',
+					'Do': function () {
+						const bonus = hasClue(this, 'saw_the_fence') ? 1 : 0;
+						const r = roll(this, 'perception', 9, bonus);
+						this.storage('cannery_roll_line', rollLine(r));
+						return r.success ? 'jump cannery_find' : 'jump cannery_fail';
+					}
+				}
+			}
+		}
+	],
+
+	'cannery_cutters_pass': [
+		'y You slip the heavy jaws around a link of wire and squeeze. The metal bites deep, giving you clean leverage to reach the gate latch.',
+		'y Fresh scrapes score the painted steel. The latch wasn\'t forced open by an animal from within; it was unhooked and swung wide from the outside.',
+		'y Tire ruts cut deep into the mud right up to the gate post.',
+		function () {
+			clue(this, 'gate_open');
+			return 'jump day2_docks_toby';
+		}
+	],
+
+	'cannery_find': [
+		'{{cannery_roll_line}}',
+		'y You circle the perimeter through the wet salal. At the double gate, you spot what the fog tried to hide.',
+		'y The latch is held together with baling twine. Scrape marks on the padlock shackle show it was deliberately unlocked and propped open.',
+		'y Heavy tire treads and dragging boot prints are stamped into the mud by the post. The gate was opened from the outside.',
+		function () {
+			clue(this, 'gate_open');
+			return 'jump day2_docks_toby';
+		}
+	],
+
+	'cannery_fail': [
+		'{{cannery_roll_line}}',
+		'y You lose your footing on the wet shale. You slide down the embankment into a tangle of rusted wire, tearing your trousers and scraping your shin.',
+		'y A truck horn blares twice from the cannery access road. Someone is patrolling the perimeter.',
+		function () {
+			heat(this, 1);
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Climb back up and inspect the gate anyway. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump cannery_reroll';
+					}
+				},
+				'Retreat': {
+					'Text': 'Scramble back into the trees before the patrol vehicle spots you.',
+					'Do': 'jump day2_docks_toby'
+				}
+			}
+		}
+	],
+
+	'cannery_reroll': [
+		'y You ignore the bleeding scrape, haul yourself up the embankment, and press close to the gate.',
+		function () {
+			const r = rerollWithConviction(this, 'grit', 11);
+			this.storage('cannery_roll_line', rollLine(r));
+			return r.success ? 'jump cannery_find' : 'jump day2_docks_toby';
+		}
+	],
+
+	// =========================================================================
+	// 8. DAY TWO: TOBY\'S TESTIMONY & DOYLE PRICE
+	// =========================================================================
+	'day2_docks_toby': [
+		'y Back at the commercial slips, the afternoon tide has brought in two crab boats.',
+		'y Toby is stacking crushed ice crates on the dock apron. His hands are still bandaged, but his breath is steadier.',
+		{
+			'Choice': {
+				'Talk': {
+					'Text': 'Ask him about vehicles at the point on the night your father died. (Empathy — he remembers, DC 9)',
+					'Do': function () {
+						const r = roll(this, 'empathy', 9);
+						this.storage('toby_day2_roll_line', rollLine(r));
+						return r.success ? 'jump toby_testimony_pass' : 'jump toby_testimony_fail';
+					}
+				},
+				'Skip': {
+					'Text': 'Leave Toby to his work and look for Doyle Price.',
+					'Do': 'jump price_dock_scene'
+				}
+			}
+		}
+	],
+
+	'toby_testimony_pass': [
+		'{{toby_day2_roll_line}}',
+		'y You lean against the ice hopper, keeping your voice casual and warm.',
+		'y Toby stops his shovel. He looks around the dock before speaking in a low, tight whisper.',
+		'toby "It was midnight, Alana. I was sleeping in the gear locker because my room was freezing."',
+		'toby "Doyle Price\'s flatbed drove out toward the point. His muffler has a hole in the baffle — you can hear that rattle from two miles off. He went out, stayed twenty minutes, and came back down the spit fast."',
+		function () {
+			clue(this, 'truck_at_point');
+			trustUp(this, 'toby', 1);
+			return 'jump price_dock_scene';
+		}
+	],
+
+	'toby_testimony_fail': [
+		'{{toby_day2_roll_line}}',
+		'y You press him too urgently: "You were on watch that night, Toby. Who drove out to the cannery?"',
+		'y Toby\'s shoulders hunch. He grips the shovel handle until his scraped knuckles go white.',
+		'toby "I shovel ice, Miss Taylor. That\'s all I do. Ask the sheriff if you want a timetable."',
+		function () {
+			heat(this, 1);
+			return 'jump price_dock_scene';
+		}
+	],
+
+	'price_dock_scene': [
+		'y Fifty yards down the pier, an old green Ford flatbed is parked with its hood up. A man in grease-stained coveralls is cursing at an alternator.',
+		'y Doyle Price. Fifty-five, thick-necked, smelling of sour beer and two-stroke oil.',
+		'y Beside the tailgate sits a pair of heavy rubber work boots caked with grey clay from the point.',
+		{
+			'Choice': {
+				'BootsCheck': {
+					'Text': 'Examine the muddy boots while he works on the engine. (Grit — don\'t flinch when he turns, DC 9)',
+					'Do': function () {
+						const r = roll(this, 'grit', 9);
+						this.storage('price_roll_line', rollLine(r));
+						return r.success ? 'jump price_boots_pass' : 'jump price_boots_fail';
+					}
+				},
+				'Avoid': {
+					'Text': 'Avoid him and head toward the diner for dinner.',
+					'Do': 'jump nora_dinner_scene'
+				}
+			}
+		}
+	],
+
+	'price_boots_pass': [
+		'{{price_roll_line}}',
+		'y You walk right up to the tailgate and inspect the boots. Diamond-lug soles, thick grey clay packed deep into the treads.',
+		'y Price spins around with a 14-millimeter wrench raised in his fist: "What the hell do you want?"',
+		'y You point at the clay: "That mud only comes from the drainage ditch behind the cannery run, Doyle."',
+		'price "I never touched your old man! You hear me? Kell told me to open the damn gate to spook him off! I drove out, unhooked the chain, and drove straight back to the tavern!"',
+		'y He realizes what he just admitted and slams his hood down with a deafening crash.',
+		function () {
+			clue(this, 'price_boots');
+			return 'jump nora_dinner_scene';
+		}
+	],
+
+	'price_boots_fail': [
+		'{{price_roll_line}}',
+		'y Price catches you snooping near his truck before you can see the soles.',
+		'price "Get your hands off my rig, city girl!"',
+		'y He lunges forward, kicking his greasy boots under the bumper and waving the wrench in your face.',
+		'price "You Taylor people think you own this county. Your old man was crazy and you\'re no better. Get off the dock before I call Ruth Vance!"',
+		'y Two fishermen on the adjacent trawler turn and watch the altercation with cold hostility.',
+		function () {
+			heat(this, 2); // Invariant §7.4: Trespassing / altercation = +2 Heat
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Refuse to back down. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump price_reroll';
+					}
+				},
+				'Leave': {
+					'Text': 'Walk away before fists are thrown.',
+					'Do': 'jump nora_dinner_scene'
+				}
+			}
+		}
+	],
+
+	'price_reroll': [
+		'y You don\'t blink. You step right into his space: "Kell gave you an order, didn\'t he, Doyle? And you followed it like a dog."',
+		function () {
+			const r = rerollWithConviction(this, 'persuasion', 11);
+			this.storage('price_roll_line', rollLine(r));
+			return r.success ? 'jump price_boots_pass' : 'jump nora_dinner_scene';
+		}
+	],
+
+	// =========================================================================
+	// 9. DAY TWO EVENING: DINNER AT THE DINER (Heat Reduction)
+	// =========================================================================
+	'nora_dinner_scene': [
+		'y Evening falls over Cormorant Bay. The neon sign of the diner buzzes red in the fog.',
+		'y Inside, the stove is roaring. Nora brings over a steaming bowl of black cod chowder and a thick slice of buttered bread.',
+		'nora "Sit down, Alana. You look like you\'ve been walking in the salt all day."',
+		{
+			'Choice': {
+				'Warmth': {
+					'Text': 'Sit with Nora and let her talk about your mother. (Empathy — sharing a quiet memory, DC 7)',
+					'Do': function () {
+						const r = roll(this, 'empathy', 7);
+						this.storage('nora_dinner_roll_line', rollLine(r));
+						return r.success ? 'jump nora_dinner_pass' : 'jump nora_dinner_fail';
+					}
+				},
+				'EatQuiet': {
+					'Text': 'Eat in silence and thank her.',
+					'Do': 'jump nora_dinner_quiet'
+				}
+			}
+		}
+	],
+
+	'nora_dinner_pass': [
+		'{{nora_dinner_roll_line}}',
+		'y You sit back and ask her about the garden she and your mother planted behind the parsonage thirty years ago.',
+		'y A soft, genuine smile breaks across Nora\'s weathered face. She sits in the booth across from you, resting her hands on the table.',
+		'nora "Your mother had a way of forgiving this place, Alana. She knew everyone here had something broken in them."',
+		'y For an hour, the town\'s suspicion recedes. Nora refills your coffee and squeezes your hand.',
+		function () {
+			trustUp(this, 'nora', 1);
+			heat(this, -1); // Heat reduction per §7.4
+			return 'jump day3_morning';
+		}
+	],
+
+	'nora_dinner_fail': [
+		'{{nora_dinner_roll_line}}',
+		'y You try to ask gently, but the strain in your voice makes it sound like an interview. Nora stiffens slightly.',
+		'nora "Eat your soup before it goes cold, child."',
+		'y She wipes down the counter quietly. Still, sitting in the warm light under the town\'s eyes lowers the tension around you.',
+		function () {
+			heat(this, -1); // Heat reduction for social presence
+			return 'jump day3_morning';
+		}
+	],
+
+	'nora_dinner_quiet': [
+		'y You eat the hot soup in silence. The warmth seeps into your bones.',
+		'y Nora nods approvingly when you clear your bowl. The simple presence of Eli\'s daughter acting like family calms the room.',
+		function () {
+			heat(this, -1);
+			return 'jump day3_morning';
+		}
+	],
+
+	// =========================================================================
+	// 10. DAY THREE: MERRITT KELL CONFRONTATION
+	// =========================================================================
+	'day3_morning': [
+		'y Wednesday morning. The funeral is set for two o\'clock in the churchyard.',
+		'y At ten, you walk into the cannery company office at the foot of Commercial Street.',
+		'y Merritt Kell is reviewing shipping manifests. Tailored wool jacket, silvering hair, impeccably polished shoes. He looks up with a practiced, radiant smile.',
+		'kell "Alana Taylor. Our prodigal journalist. Please, sit down. Nora told me you were in town."',
+		{
+			'Choice': {
+				'ConfrontKell': {
+					'Text': 'Call out his charming deflection and confront him about Eli\'s complaints. (Persuasion — cut through his veneer, DC 11)',
+					'Do': function () {
+						const r = roll(this, 'persuasion', 11);
+						this.storage('kell_roll_line', rollLine(r));
+						return r.success ? 'jump kell_pass' : 'jump kell_fail';
+					}
+				},
+				'ListenKell': {
+					'Text': 'Accept his condolences and leave quietly.',
+					'Do': 'jump funeral_scene'
+				}
+			}
+		}
+	],
+
+	'kell_pass': [
+		'{{kell_roll_line}}',
+		'y You lean over his mahogany desk: "My father filed an animal cruelty complaint against your cannery run three weeks ago, Merritt. You sent Doyle Price to open the gate."',
+		'y Kell\'s smile vanishes. His eyes go dead and flat, like grey pebbles.',
+		'kell "Your father was an old man with a camera trespassing on private property, Alana."',
+		'kell "In this county, people who poke their noses into working leases find themselves with broken windows. Or worse. If you have any sense, you\'ll bury him this afternoon and get on Friday\'s boat."',
+		function () {
+			clue(this, 'kell_threat');
+			return 'jump funeral_scene';
+		}
+	],
+
+	'kell_fail': [
+		'{{kell_roll_line}}',
+		'y You press him, but Kell parries every word with smooth condescension: "Grief makes people imagine melodrama where there is only unfortunate rural reality."',
+		'y He rises and opens the door for you: "Give my regards to Nora, Alana. And do take care walking the bluffs alone."',
+		'y His yard foreman watches you walk down the gravel path with undisguised contempt.',
+		function () {
+			heat(this, 1);
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Demand an answer before he shuts the door. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump kell_reroll';
+					}
+				},
+				'Leave': {
+					'Text': 'Walk down to the graveyard.',
+					'Do': 'jump funeral_scene'
+				}
+			}
+		}
+	],
+
+	'kell_reroll': [
+		'y You wedge your boot in the doorframe, glaring directly into his eyes.',
+		function () {
+			const r = rerollWithConviction(this, 'grit', 9);
+			this.storage('kell_roll_line', rollLine(r));
+			return r.success ? 'jump kell_pass' : 'jump funeral_scene';
+		}
+	],
+
+	// =========================================================================
+	// 11. DAY THREE AFTERNOON: THE FUNERAL
+	// =========================================================================
+	'funeral_scene': [
+		'y At two o\'clock, a dozen townsfolk gather on the wet hillside behind Saint Jude in the Pines.',
+		'y The raw earth beside your mother\'s headstone is covered in fake green turf. Rain taps hollow against the black umbrellas.',
+		'y Pastor Abel Creel stands at the head of the grave. Tall, stooped, wearing vestments frayed at the cuffs. His hands tremble as he holds the open prayer book.',
+		'y Nora stands beside you. Across the open trench, Sheriff Vance stands in uniform. Far back, under the wet dripping branches of a cedar, Toby Rook watches in silence.',
+		{
+			'Choice': {
+				'ListenCreel': {
+					'Text': 'Listen to Pastor Creel\'s eulogy and read his guarded grief. (Empathy — he knows what was done, DC 9)',
+					'Do': function () {
+						const r = roll(this, 'empathy', 9);
+						this.storage('funeral_roll_line', rollLine(r));
+						return r.success ? 'jump funeral_empathy_pass' : 'jump funeral_empathy_fail';
+					}
+				},
+				'StandSilent': {
+					'Text': 'Keep your head down until the casket is lowered.',
+					'Do': 'jump funeral_finish'
+				}
+			}
+		}
+	],
+
+	'funeral_empathy_pass': [
+		'{{funeral_roll_line}}',
+		'y You don\'t look at the dirt. You watch Creel\'s face as he reads Psalm 23.',
+		'y His voice cracks on *"though I walk through the valley of the shadow of death."* His gaze flickers toward Toby at the tree line, filled with profound, agonizing compassion.',
+		'y After the mourners disperse, Creel approaches you, his grey eyes glistening.',
+		'creel "Alana. Eli was a righteous man who looked for monsters in the dark. God forgive those of us who built a cage and called it mercy."',
+		function () {
+			trustUp(this, 'creel', 1);
+			trustUp(this, 'nora', 1);
+			heat(this, -1); // Funeral Heat reduction per §7.4
+			return 'jump vance_drawer_scene';
+		}
+	],
+
+	'funeral_empathy_fail': [
+		'{{funeral_roll_line}}',
+		'y You stare rigidly ahead, refusing to look anyone in the eye. The coldness radiating from you is palpable.',
+		'y When the dirt thuds against the pine lid, the townspeople walk past you with averted eyes and hurried nods.',
+		function () {
+			heat(this, -1); // Social scene still cools town alarm slightly
+			return 'jump vance_drawer_scene';
+		}
+	],
+
+	'funeral_finish': [
+		'y The pine box is lowered into the wet loam. You throw a single handful of dark gravel onto the lid.',
+		'y Eli Taylor is buried.',
+		function () {
+			heat(this, -1);
+			return 'jump vance_drawer_scene';
+		}
+	],
+
+	// =========================================================================
+	// 12. DAY THREE LATE AFTERNOON: VANCE\'S DRAWER
+	// =========================================================================
+	'vance_drawer_scene': [
+		'y Four in the afternoon. A timber truck has overturned on the causeway highway; the siren atop the fire hall wails, and Vance and her deputy speed out in their cruisers.',
+		'y The sheriff\'s office is deserted. The door latch is on the latch; through the glass, the desk sits vacant under the fluorescent hum.',
+		'y The locked bottom drawer is right there.',
+		{
+			'Choice': {
+				'SearchDrawer': {
+					'Text': 'Break into Vance\'s locked bottom drawer. (Perception — bypass the cylinder lock, DC 11)',
+					'Do': function () {
+						const r = roll(this, 'perception', 11);
+						this.storage('vance_drawer_roll_line', rollLine(r));
+						return r.success ? 'jump vance_drawer_success' : 'jump vance_drawer_fail';
+					}
+				},
+				'WalkAway': {
+					'Text': 'Walk away before anyone sees you near the municipal hall.',
+					'Do': 'jump night_day3'
+				}
+			}
+		}
+	],
+
+	'vance_drawer_success': [
+		'{{vance_drawer_roll_line}}',
+		'y You use a steel hair pin and a pen cap, easing the brass tumblers until the cylinder turns with a soft, clean *click*.',
+		'y Inside lies a manila folder marked *CONFIDENTIAL / TOWN SEAL*.',
+		'y Inside is an audio cassette labeled: *Creel / Rook — Sealed Confession Log — Monthly.*',
+		'y A handwritten memo from Creel to Vance is clipped to the cassette: *"Ruth — The boy came to the rectory again after the change. He remembers nothing of the Taylor yard, only the smell of salt and blood. God will judge him, but the county law will destroy him. Keep the cage shut."*',
+		function () {
+			clue(this, 'confession_heard');
+			return 'jump night_day3';
+		}
+	],
+
+	'vance_drawer_fail': [
+		'{{vance_drawer_roll_line}}',
+		'y The pin bends and snaps inside the lock mechanism, jamming the cylinder with a violent scrape.',
+		'y Across the street, the postmaster steps out to his truck, squinting through the rain at the sheriff\'s window.',
+		'y You slip out the side door into the alley, your heart hammering in your ribs.',
+		function () {
+			heat(this, 1);
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Pry it with a flathead screwdriver before leaving. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump vance_drawer_reroll';
+					}
+				},
+				'Flee': {
+					'Text': 'Flee into the rain.',
+					'Do': 'jump night_day3'
+				}
+			}
+		}
+	],
+
+	'vance_drawer_reroll': [
+		'y You wrench the metal with stubborn, desperate force.',
+		function () {
+			const r = rerollWithConviction(this, 'grit', 11);
+			this.storage('vance_drawer_roll_line', rollLine(r));
+			return r.success ? 'jump vance_drawer_success' : 'jump night_day3';
+		}
+	],
+
+	// =========================================================================
+	// 13. DAY THREE NIGHT: MOTEL (ACT ONE END)
+	// =========================================================================
+	'night_day3': [
+		'y Night falls on Wednesday. The rain has gathered into a black gale off the Pacific, thrashing the motel roof.',
+		'y You spread your notebook across the bed in Room 4.',
+		'y Eli\'s complaint letter. The photograph of the run. The gate opened from the outside. The muddy boot prints. The sealed confessions.',
+		'y Tomorrow is Thursday. The moon clock reaches its zenith tomorrow night.',
+		'y The pieces are on the board, and the town knows you are holding them.',
+		'y End of Act One.',
 		'end'
 	]
 });
