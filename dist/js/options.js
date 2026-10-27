@@ -7,7 +7,7 @@
 
 monogatari.settings({
 	'Name': 'Cormorant Bay',
-	'Version': '1.0.3',
+	'Version': '1.0.7',
 	'Label': 'Start',
 	'Slots': 10,
 	'MultiLanguage': false,
@@ -21,7 +21,7 @@ monogatari.settings({
 	'ServiceWorkers': true,
 	'AspectRatio': 'None',
 	'ForceAspectRatio': 'None',
-	'TypeAnimation': true,
+	'TypeAnimation': false,
 	'InstantText': true,
 	'NVLTypeAnimation': true,
 	'NarratorTypeAnimation': true,
@@ -78,7 +78,11 @@ monogatari.assets('scenes', {
 	'darkroom': 'bg_darkroom.jpg',
 	'shed_ext': 'bg_shed_ext.jpg',
 	'cannery_ext': 'bg_cannery_ext.jpg',
-	'graveyard': 'bg_graveyard.jpg'
+	'graveyard': 'bg_graveyard.jpg',
+	'house_ext': 'bg_house_ext.jpg',
+	'dock_dawn': 'bg_dock_dawn.jpg',
+	'house_night': 'bg_house_night.jpg',
+	'point_dawn': 'bg_point_dawn.jpg'
 });
 
 // Music & Audio Bed
@@ -102,6 +106,10 @@ monogatari.characters({
 	'vance': {
 		name: 'Sheriff Vance',
 		color: '#94a3b8',
+		default_expression: 'default',
+		expressions: {
+			'default': 'vance.jpg'
+		},
 		sprites: {
 			'default': 'vance.jpg'
 		}
@@ -109,6 +117,10 @@ monogatari.characters({
 	'nora': {
 		name: 'Nora',
 		color: '#f97316',
+		default_expression: 'default',
+		expressions: {
+			'default': 'nora.jpg'
+		},
 		sprites: {
 			'default': 'nora.jpg'
 		}
@@ -116,6 +128,10 @@ monogatari.characters({
 	'toby': {
 		name: 'Toby',
 		color: '#38bdf8',
+		default_expression: 'default',
+		expressions: {
+			'default': 'toby.jpg'
+		},
 		sprites: {
 			'default': 'toby.jpg'
 		}
@@ -123,6 +139,10 @@ monogatari.characters({
 	'creel': {
 		name: 'Pastor Creel',
 		color: '#c084fc',
+		default_expression: 'default',
+		expressions: {
+			'default': 'creel.jpg'
+		},
 		sprites: {
 			'default': 'creel.jpg'
 		}
@@ -130,6 +150,10 @@ monogatari.characters({
 	'kell': {
 		name: 'Merritt Kell',
 		color: '#f87171',
+		default_expression: 'default',
+		expressions: {
+			'default': 'kell.jpg'
+		},
 		sprites: {
 			'default': 'kell.jpg'
 		}
@@ -137,6 +161,10 @@ monogatari.characters({
 	'price': {
 		name: 'Doyle Price',
 		color: '#facc15',
+		default_expression: 'default',
+		expressions: {
+			'default': 'price.jpg'
+		},
 		sprites: {
 			'default': 'price.jpg'
 		}

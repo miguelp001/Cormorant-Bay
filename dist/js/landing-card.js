@@ -185,6 +185,7 @@ const CLUE_DETAILS = {
 	vance_nervous: {
 		title: 'Vance\'s Locked Desk Drawer',
 		found: 'Sheriff\'s Office interview',
+		image: 'assets/images/props/prop_case_file.jpg',
 		surface: 'The Sheriff is defensive and covering up town negligence.',
 		underneath: 'She is not covering for herself; she is holding a heavy door shut to protect a child.'
 	},
@@ -236,6 +237,7 @@ const CLUE_DETAILS = {
 	saw_the_wolf: {
 		title: 'The Beast Under the Moon',
 		found: 'Point cannery wire / Thursday night motel survival',
+		image: 'assets/images/props/prop_notebook.jpg',
 		surface: 'A terrifying encounter with an apex predator.',
 		underneath: 'The amber eyes in the wolf\'s skull were undeniably the eyes of Toby Rook.'
 	}

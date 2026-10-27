@@ -238,8 +238,47 @@ window.EVIDENCE = EVIDENCE;
 // =============================================================================
 // Monogatari Engine Extensions (AGENTS.md §2, §4, §7.1, §8)
 // Enables functions in Choice 'Do' (for dynamic roll branches), script array
-// functions returning jump strings, and storage(key, val) two-arg setter.
+// functions returning jump strings, storage(key, val) two-arg setter, and
+// fixes concurrency race condition in assertAsync for multi-condition choices.
 // =============================================================================
+
+let activeAssertions = 0;
+if (typeof monogatari !== 'undefined' && typeof monogatari.assertAsync === 'function') {
+	monogatari.assertAsync = function (condition, context = null, args = null) {
+		activeAssertions++;
+		this.global('block', true);
+		return new Promise((resolve, reject) => {
+			try {
+				let res = condition.apply(context || this, args || []);
+				if (typeof res === 'boolean') {
+					if (res) resolve();
+					else reject();
+				} else if (res !== null && typeof res === 'object' && typeof res.then === 'function') {
+					res.then((val) => {
+						if (typeof val === 'boolean') {
+							if (val) resolve();
+							else reject();
+						} else {
+							resolve();
+						}
+					}).catch(reject);
+				} else if (res !== null && typeof res === 'object') {
+					resolve();
+				} else {
+					reject();
+				}
+			} catch (e) {
+				reject(e);
+			}
+		}).finally(() => {
+			activeAssertions--;
+			if (activeAssertions <= 0) {
+				activeAssertions = 0;
+				this.global('block', false);
+			}
+		});
+	};
+}
 
 if (typeof monogatari !== 'undefined' && typeof monogatari.storage === 'function') {
 	const originalMonogatariStorage = monogatari.storage.bind(monogatari);
@@ -265,6 +304,7 @@ if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function'
 				let doAction = this.dataset.do;
 				if (doAction === 'null') {
 					ChoiceAction.blocking = false;
+					engine.global('block', false);
 					return;
 				}
 
@@ -296,6 +336,7 @@ if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function'
 						statement = await statement.call(engine, engine);
 					}
 					ChoiceAction.blocking = false;
+					engine.global('block', false);
 					if (typeof choiceKey === 'string') {
 						engine.history('choice').push(choiceKey);
 					}
@@ -309,6 +350,7 @@ if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function'
 						.then(() => execute())
 						.catch((err) => {
 							ChoiceAction.blocking = false;
+							engine.global('block', false);
 							engine.debug.error(err);
 						});
 					return;
@@ -316,9 +358,37 @@ if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function'
 
 				execute().catch((err) => {
 					ChoiceAction.blocking = false;
+					engine.global('block', false);
 					engine.debug.error(err);
 				});
 			});
+		};
+	}
+}
+
+if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function') {
+	const DialogAction = monogatari.action('Dialog');
+	if (DialogAction) {
+		DialogAction.shouldProceed = async function () {
+			const engine = this.engine;
+			const el = engine.element();
+			let v;
+			const centered = el.find('[data-component="centered-dialog"]');
+			if (centered.exists()) {
+				v = centered.find('[data-content="wrapper"]').get(0);
+			} else {
+				const tw = el.find('type-writer');
+				if (tw.exists()) {
+					v = tw.last().get(0);
+				}
+			}
+			if (v) {
+				try {
+					engine.stopTyping(v);
+				} catch (e) {}
+			}
+			engine.global('finished_typing', true);
+			return Promise.resolve();
 		};
 	}
 }
@@ -565,10 +635,11 @@ monogatari.script({
 	// 4. ELI\'S HOUSE INVESTIGATION (Day 1 Afternoon)
 	// =========================================================================
 	'house_arrival': [
-		'show scene house with fadeIn',
+		'show scene house_ext with fadeIn',
 		'y Eli\'s house sits at the end of an unpaved lane choked with blackberry briars.',
 		'y The cedar shake is black with water. Brown industrial packing tape covers every pane of glass on the ground floor, cross-hatched in tight grids.',
 		'y The brass key turns with a dry, grinding scrape. The door opens into chill, damp air that smells of wet paper, darkroom vinegar, and unwashed wool.',
+		'show scene house with fadeIn',
 		'y In the study: his oak roll-top desk.',
 		'y Down the narrow hall: the sealed door of his makeshift darkroom.',
 		'y Out the rear window: the rusted corrugated shed beside the hemlocks.',
@@ -1779,7 +1850,7 @@ monogatari.script({
 	// =========================================================================
 	'day6_morning': [
 		'hide character creel with fadeOut',
-		'show scene dock with fadeIn',
+		'show scene dock_dawn with fadeIn',
 		'play music rain loop',
 		'y Friday morning. The low horn of the ferry vibrates across the grey water of Cormorant Bay.',
 		'y Down at the commercial pier, the town has gathered in the light drizzle: Ruth Vance in uniform, Nora with her hands tucked in her coat, Merritt Kell standing by his car, Doyle Price leaning against his flatbed, and Pastor Creel standing beside Toby Rook.',
