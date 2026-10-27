@@ -7,7 +7,7 @@
 
 monogatari.settings({
 	'Name': 'Cormorant Bay',
-	'Version': '1.0.0',
+	'Version': '1.0.3',
 	'Label': 'Start',
 	'Slots': 10,
 	'MultiLanguage': false,
@@ -103,42 +103,42 @@ monogatari.characters({
 		name: 'Sheriff Vance',
 		color: '#94a3b8',
 		sprites: {
-			'default': 'vance.svg'
+			'default': 'vance.jpg'
 		}
 	},
 	'nora': {
 		name: 'Nora',
 		color: '#f97316',
 		sprites: {
-			'default': 'nora.svg'
+			'default': 'nora.jpg'
 		}
 	},
 	'toby': {
 		name: 'Toby',
 		color: '#38bdf8',
 		sprites: {
-			'default': 'toby.svg'
+			'default': 'toby.jpg'
 		}
 	},
 	'creel': {
 		name: 'Pastor Creel',
 		color: '#c084fc',
 		sprites: {
-			'default': 'creel.svg'
+			'default': 'creel.jpg'
 		}
 	},
 	'kell': {
 		name: 'Merritt Kell',
 		color: '#f87171',
 		sprites: {
-			'default': 'kell.svg'
+			'default': 'kell.jpg'
 		}
 	},
 	'price': {
 		name: 'Doyle Price',
 		color: '#facc15',
 		sprites: {
-			'default': 'price.svg'
+			'default': 'price.jpg'
 		}
 	},
 	'ferryman': {

@@ -236,6 +236,120 @@ window.confirmLandingCard = confirmLandingCard;
 window.EVIDENCE = EVIDENCE;
 
 // =============================================================================
+// Monogatari Engine Extensions (AGENTS.md §2, §4, §7.1, §8)
+// Enables functions in Choice 'Do' (for dynamic roll branches), script array
+// functions returning jump strings, and storage(key, val) two-arg setter.
+// =============================================================================
+
+if (typeof monogatari !== 'undefined' && typeof monogatari.storage === 'function') {
+	const originalMonogatariStorage = monogatari.storage.bind(monogatari);
+	monogatari.storage = function (key, value) {
+		if (typeof key === 'string' && typeof value !== 'undefined') {
+			return originalMonogatariStorage({ [key]: value });
+		}
+		return originalMonogatariStorage(key);
+	};
+}
+
+if (typeof monogatari !== 'undefined' && typeof monogatari.action === 'function') {
+	const ChoiceAction = monogatari.action('Choice');
+	if (ChoiceAction) {
+		ChoiceAction.bind = async function () {
+			const engine = this.engine;
+			engine.on('click', '[data-choice]:not([disabled])', function (ev) {
+				engine.debug.debug('Registered Click on Choice Button');
+				ev.stopImmediatePropagation();
+				ev.stopPropagation();
+				ev.preventDefault();
+
+				let doAction = this.dataset.do;
+				if (doAction === 'null') {
+					ChoiceAction.blocking = false;
+					return;
+				}
+
+				engine.element().find('choice-container').remove();
+				const choiceKey = this.dataset.choice;
+				const currentChoice = engine.global('_CurrentChoice').pop()?.Choice;
+
+				if (currentChoice && typeof currentChoice.Timer !== 'undefined') {
+					const timer = engine.global('_ChoiceTimer').pop();
+					engine.global('_choice_pending_rollback').pop();
+					if (typeof timer !== 'undefined' && timer.props) {
+						if (timer.props.timer) {
+							clearTimeout(timer.props.timer);
+						}
+						if (timer.parentNode !== null && timer.element) {
+							timer.element().remove();
+						}
+					}
+				}
+
+				const hasChoiceEntry = currentChoice && typeof choiceKey !== 'undefined' && typeof currentChoice[choiceKey] !== 'undefined';
+				if (hasChoiceEntry) {
+					doAction = currentChoice[choiceKey].Do;
+				}
+
+				const execute = async () => {
+					let statement = doAction;
+					if (typeof statement === 'function') {
+						statement = await statement.call(engine, engine);
+					}
+					ChoiceAction.blocking = false;
+					if (typeof choiceKey === 'string') {
+						engine.history('choice').push(choiceKey);
+					}
+					if (typeof statement === 'string') {
+						return await engine.run(statement);
+					}
+				};
+
+				if (hasChoiceEntry && typeof currentChoice[choiceKey].onChosen === 'function') {
+					Promise.resolve(currentChoice[choiceKey].onChosen.call(engine, engine))
+						.then(() => execute())
+						.catch((err) => {
+							ChoiceAction.blocking = false;
+							engine.debug.error(err);
+						});
+					return;
+				}
+
+				execute().catch((err) => {
+					ChoiceAction.blocking = false;
+					engine.debug.error(err);
+				});
+			});
+		};
+	}
+}
+
+if (typeof monogatari !== 'undefined' && typeof monogatari.run === 'function') {
+	const originalMonogatariRun = monogatari.run;
+	monogatari.run = async function (statement, advance = true) {
+		if (typeof statement === 'function') {
+			const uStep = this.state('step');
+			const uLabel = this.state('label');
+			const res = await statement.call(this, this);
+			if (typeof res === 'string') {
+				return await this.run(res, advance);
+			}
+			if (res === false) {
+				return { advance: false };
+			}
+			if (advance) {
+				const curStep = this.state('step');
+				const curLabel = this.state('label');
+				if (curStep === uStep && curLabel === uLabel) {
+					return await this.next().then(() => ({ advance: true }));
+				}
+			}
+			return { advance: false };
+		}
+		return await originalMonogatariRun.call(this, statement, advance);
+	};
+}
+
+// =============================================================================
 // Monogatari Narrative Script: Milestones 1–5
 // =============================================================================
 

@@ -164,18 +164,21 @@ const CLUE_DETAILS = {
 	county_letter: {
 		title: 'County Board of Health Complaint',
 		found: 'Eli\'s forced desk drawer',
+		image: 'assets/images/props/prop_county_letter.jpg',
 		surface: 'Eli documenting commercial kennel noise and animal cruelty.',
 		underneath: 'Eli was documenting the containment of a human being behind the cannery.'
 	},
 	the_photograph: {
 		title: 'Night Floodlight Photographs',
 		found: 'Eli\'s darkroom drying wire',
+		image: 'assets/images/props/prop_photograph.jpg',
 		surface: 'Telephoto shot of a large mastiff in an industrial run.',
 		underneath: 'A creature with elongated forelimbs and human shoulder geometry; not a dog.'
 	},
 	circled_calendar: {
 		title: 'Wall Calendar Moon Markings',
 		found: 'Eli\'s locked backyard shed',
+		image: 'assets/images/props/prop_calendar.jpg',
 		surface: 'Markings tracking dog-fighting schedules or cannery shifts.',
 		underneath: 'Six days circled in every single month: the exact cycle of the lunar calendar.'
 	},
@@ -188,12 +191,14 @@ const CLUE_DETAILS = {
 	vance_admission: {
 		title: 'Vance\'s Admission of Animal Warnings',
 		found: 'Confrontation with Eli\'s complaint letter',
+		image: 'assets/images/props/prop_coroner_report.jpg',
 		surface: 'Vance covering for Merritt Kell\'s private kennel lease.',
 		underneath: 'Vance was managing the town\'s containment protocol.'
 	},
 	gate_open: {
 		title: 'Tampered Cannery Gate Latch',
 		found: 'Point cannery exterior run',
+		image: 'assets/images/props/prop_gate.jpg',
 		surface: 'Neglected, decaying security on commercial property.',
 		underneath: 'The gate was unhooked and swung wide from the outside; deliberate sabotage.'
 	},
@@ -206,6 +211,7 @@ const CLUE_DETAILS = {
 	price_boots: {
 		title: 'Mud-Caked Work Boots',
 		found: 'Doyle Price\'s truck tailgate',
+		image: 'assets/images/props/prop_boots.jpg',
 		surface: 'Price was present at the murder scene in Eli\'s yard.',
 		underneath: 'The clay came from the cannery drainage ditch; he opened the gate, but never touched Eli.'
 	},
@@ -317,12 +323,19 @@ function renderJournal () {
 					underneath: 'A deeper pattern connects this to the town.'
 				};
 
+				const imgHtml = info.image ? `
+					<div class="clue-thumb">
+						<img src="${info.image}" alt="${info.title}" loading="lazy">
+					</div>
+				` : '';
+
 				html += `
 					<div class="clue-entry-card">
 						<div class="clue-header">
 							<span class="clue-title">${info.title}</span>
 							<span class="clue-origin">${info.found}</span>
 						</div>
+						${imgHtml}
 						<div class="clue-readings">
 							<div class="reading-surface">
 								<span class="reading-surface-label">Apparent:</span>
@@ -367,9 +380,14 @@ function renderJournal () {
 			html += `
 				<div class="suspect-case-card">
 					<div class="suspect-header">
-						<div>
-							<span class="suspect-title">${s.name}</span>
-							<span class="suspect-role">${s.role}</span>
+						<div class="suspect-header-info">
+							<div class="suspect-avatar">
+								<img src="assets/images/characters/${s.id}.jpg" alt="${s.name}" loading="lazy">
+							</div>
+							<div>
+								<span class="suspect-title">${s.name}</span>
+								<span class="suspect-role">${s.role}</span>
+							</div>
 						</div>
 						<span class="tier-badge ${tierClass}">${tierLabel}</span>
 					</div>

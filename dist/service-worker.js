@@ -1,7 +1,7 @@
 'use strict';
 
 const name = 'CormorantBay';
-const version = '1.0.0';
+const version = '1.1.0';
 const cacheName = `${name}-v${version}`;
 
 const files = [
@@ -35,12 +35,20 @@ const files = [
 	'./assets/images/backgrounds/bg_graveyard.jpg',
 
 	// Character Portraits
-	'./assets/images/characters/vance.svg',
-	'./assets/images/characters/nora.svg',
-	'./assets/images/characters/toby.svg',
-	'./assets/images/characters/creel.svg',
-	'./assets/images/characters/kell.svg',
-	'./assets/images/characters/price.svg',
+	'./assets/images/characters/vance.jpg',
+	'./assets/images/characters/nora.jpg',
+	'./assets/images/characters/toby.jpg',
+	'./assets/images/characters/creel.jpg',
+	'./assets/images/characters/kell.jpg',
+	'./assets/images/characters/price.jpg',
+
+	// Evidence Props
+	'./assets/images/props/prop_photograph.jpg',
+	'./assets/images/props/prop_calendar.jpg',
+	'./assets/images/props/prop_county_letter.jpg',
+	'./assets/images/props/prop_boots.jpg',
+	'./assets/images/props/prop_gate.jpg',
+	'./assets/images/props/prop_coroner_report.jpg',
 
 	// Audio
 	'./assets/audio/music/mus_rain_loop.wav',
@@ -74,8 +82,33 @@ self.addEventListener('fetch', (event) => {
 		return;
 	}
 
+	const url = new URL(event.request.url);
+	const isCode = url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname === '/' || url.pathname.endsWith('/');
+
+	if (isCode) {
+		// Network-first for code: fetch latest when online, fallback to cache when offline
+		event.respondWith(
+			fetch(event.request).then((response) => {
+				if (response && response.status === 200) {
+					const clone = response.clone();
+					caches.open(cacheName).then((cache) => cache.put(event.request, clone));
+				}
+				return response;
+			}).catch(() => {
+				return caches.match(event.request, { ignoreSearch: true }).then((cached) => {
+					if (cached) return cached;
+					if (event.request.mode === 'navigate') {
+						return caches.match('./index.html', { ignoreSearch: true });
+					}
+				});
+			})
+		);
+		return;
+	}
+
+	// Cache-first for large media assets (images, audio, fonts)
 	event.respondWith(
-		caches.match(event.request).then((cachedResponse) => {
+		caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
 			if (cachedResponse) {
 				return cachedResponse;
 			}
@@ -88,10 +121,6 @@ self.addEventListener('fetch', (event) => {
 					cache.put(event.request, responseToCache);
 				});
 				return response;
-			}).catch(() => {
-				if (event.request.mode === 'navigate') {
-					return caches.match('./index.html');
-				}
 			});
 		})
 	);
