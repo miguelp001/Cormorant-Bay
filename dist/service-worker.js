@@ -1,7 +1,7 @@
 'use strict';
 
 const name = 'CormorantBay';
-const version = '0.8.0';
+const version = '1.0.0';
 const cacheName = `${name}-v${version}`;
 
 const files = [

@@ -249,7 +249,7 @@ console.log('--- Section 4: Milestones 7 & 8 Assets & PWA Verification ---');
 // 1. Verify Service Worker file existence and cache array
 const swContent = fs.readFileSync('dist/service-worker.js', 'utf8');
 const versionMatch = swContent.match(/const version = '([^']+)';/);
-assert(versionMatch && versionMatch[1] === '0.8.0', 'Service worker version must be bumped to 0.8.0');
+assert(versionMatch && versionMatch[1] === '1.0.0', 'Service worker version must be bumped to 1.0.0');
 
 const filesMatch = swContent.match(/const files = \[([\s\S]*?)\];/);
 assert(filesMatch, 'Service worker must declare files array');

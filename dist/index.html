@@ -53,6 +53,7 @@
 					<button type="button" class="tab-btn active" data-tab="clues">Field Notes (<span id="journal-clue-count">0</span>)</button>
 					<button type="button" class="tab-btn" data-tab="suspects">Suspect Cases</button>
 					<button type="button" class="tab-btn" data-tab="dossier">Alana's Dossier</button>
+					<button type="button" class="tab-btn" data-tab="about">About &amp; Disclosures</button>
 				</nav>
 			</header>
 
@@ -106,6 +107,32 @@
 							<div class="conviction-pips" id="dossier-conviction-pips">
 								<!-- Dynamic pips -->
 							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- TAB 4: About & Disclosures -->
+				<section id="tab-about" class="journal-tab-pane">
+					<div class="dossier-container">
+						<div class="dossier-section">
+							<h3>Cormorant Bay &bull; Version 1.0.0</h3>
+							<p>A stat-driven folk-horror mystery visual novel built with Monogatari v2.8.0.</p>
+							<p class="conviction-desc">In a mystery, the cover story and the truth are made of the same evidence. The town is not evil; the kindness of Cormorant Bay is the problem.</p>
+						</div>
+						<div class="dossier-section">
+							<h3>Content &amp; Asset Disclosures</h3>
+							<p><strong>Visual Artwork:</strong> High-grain photographic aesthetic. Created, processed, and curated under commercial license.</p>
+							<p><strong>Audio Design:</strong> Sparse coastal soundscape featuring ambient Pacific rainfall, salt-air maritime winds, and solo fingerpicked acoustic guitar in D minor.</p>
+							<p><strong>Engine &amp; Typography:</strong> Powered by the open-source Monogatari Visual Novel Engine (MIT License). Web fonts licensed under SIL Open Font License.</p>
+						</div>
+						<div class="dossier-section">
+							<h3>Rules of Investigation</h3>
+							<ul style="margin: 0.5rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.5; color: #94a3b8;">
+								<li><strong>Transparent Dice:</strong> Every roll is 2d6 + Skill + Clue Bonus vs a telegraphed DC.</li>
+								<li><strong>Failure Moves the Story:</strong> Every failure yields state (a lesser clue, Heat, or a trust shift).</li>
+								<li><strong>Conviction:</strong> Exactly two charges per playthrough to refuse a critical failure.</li>
+								<li><strong>The Accusation:</strong> Vance is the obstacle, not a suspect. Mercy is gated on trust, not evidence.</li>
+							</ul>
 						</div>
 					</div>
 				</section>

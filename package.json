@@ -1,6 +1,6 @@
 {
   "name": "cormorant-bay",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A stat-driven mystery visual novel set in Cormorant Bay",
   "private": true,
   "scripts": {

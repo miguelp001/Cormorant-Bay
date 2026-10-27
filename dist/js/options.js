@@ -7,7 +7,7 @@
 
 monogatari.settings({
 	'Name': 'Cormorant Bay',
-	'Version': '0.1.0',
+	'Version': '1.0.0',
 	'Label': 'Start',
 	'Slots': 10,
 	'MultiLanguage': false,
@@ -144,5 +144,21 @@ monogatari.characters({
 	'ferryman': {
 		name: 'Ferryman',
 		color: '#64748b'
+	}
+});
+
+// Credits & Production Disclosures (§10 & DESIGN.md §12.4)
+monogatari.configuration({
+	'credits': {
+		'Cormorant Bay': {
+			'_': 'A stat-driven folk-horror mystery visual novel built with Monogatari v2.8.0.',
+			'Design & Narrative': 'Alana Taylor Investigation Team',
+			'Version': '1.0.0 Release'
+		},
+		'Disclosures & Attribution': {
+			'Visual Art': 'AI-assisted, high-grain photographic aesthetic. Processed and curated under commercial license.',
+			'Audio Design': 'Ambient coastal rain bed and solo guitar theme in D minor.',
+			'Engine': 'Monogatari Visual Novel Engine (MIT License)'
+		}
 	}
 });
