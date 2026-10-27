@@ -384,7 +384,7 @@ function renderJournal () {
 					<div class="suspect-header">
 						<div class="suspect-header-info">
 							<div class="suspect-avatar">
-								<img src="assets/images/characters/${s.id}.jpg" alt="${s.name}" loading="lazy">
+								<img src="assets/images/characters/${s.id}.png" alt="${s.name}" loading="lazy">
 							</div>
 							<div>
 								<span class="suspect-title">${s.name}</span>

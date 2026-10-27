@@ -108,10 +108,10 @@ monogatari.characters({
 		color: '#94a3b8',
 		default_expression: 'default',
 		expressions: {
-			'default': 'vance.jpg'
+			'default': 'vance.png'
 		},
 		sprites: {
-			'default': 'vance.jpg'
+			'default': 'vance.png'
 		}
 	},
 	'nora': {
@@ -119,10 +119,10 @@ monogatari.characters({
 		color: '#f97316',
 		default_expression: 'default',
 		expressions: {
-			'default': 'nora.jpg'
+			'default': 'nora.png'
 		},
 		sprites: {
-			'default': 'nora.jpg'
+			'default': 'nora.png'
 		}
 	},
 	'toby': {
@@ -130,10 +130,10 @@ monogatari.characters({
 		color: '#38bdf8',
 		default_expression: 'default',
 		expressions: {
-			'default': 'toby.jpg'
+			'default': 'toby.png'
 		},
 		sprites: {
-			'default': 'toby.jpg'
+			'default': 'toby.png'
 		}
 	},
 	'creel': {
@@ -141,10 +141,10 @@ monogatari.characters({
 		color: '#c084fc',
 		default_expression: 'default',
 		expressions: {
-			'default': 'creel.jpg'
+			'default': 'creel.png'
 		},
 		sprites: {
-			'default': 'creel.jpg'
+			'default': 'creel.png'
 		}
 	},
 	'kell': {
@@ -152,10 +152,10 @@ monogatari.characters({
 		color: '#f87171',
 		default_expression: 'default',
 		expressions: {
-			'default': 'kell.jpg'
+			'default': 'kell.png'
 		},
 		sprites: {
-			'default': 'kell.jpg'
+			'default': 'kell.png'
 		}
 	},
 	'price': {
@@ -163,10 +163,10 @@ monogatari.characters({
 		color: '#facc15',
 		default_expression: 'default',
 		expressions: {
-			'default': 'price.jpg'
+			'default': 'price.png'
 		},
 		sprites: {
-			'default': 'price.jpg'
+			'default': 'price.png'
 		}
 	},
 	'ferryman': {

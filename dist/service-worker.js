@@ -1,7 +1,7 @@
 'use strict';
 
 const name = 'CormorantBay';
-const version = '1.1.4';
+const version = '1.1.5';
 const cacheName = `${name}-v${version}`;
 
 const files = [
@@ -38,7 +38,13 @@ const files = [
 	'./assets/images/backgrounds/bg_house_night.jpg',
 	'./assets/images/backgrounds/bg_point_dawn.jpg',
 
-	// Character Portraits
+	// Character Portraits (Transparent PNG Sprites)
+	'./assets/images/characters/vance.png',
+	'./assets/images/characters/nora.png',
+	'./assets/images/characters/toby.png',
+	'./assets/images/characters/creel.png',
+	'./assets/images/characters/kell.png',
+	'./assets/images/characters/price.png',
 	'./assets/images/characters/vance.jpg',
 	'./assets/images/characters/nora.jpg',
 	'./assets/images/characters/toby.jpg',
