@@ -233,6 +233,7 @@ window.rollLine = rollLine;
 window.rerollWithConviction = rerollWithConviction;
 window.evidenceAgainst = evidenceAgainst;
 window.confirmLandingCard = confirmLandingCard;
+window.EVIDENCE = EVIDENCE;
 
 // =============================================================================
 // Monogatari Narrative Script: Milestones 1–5

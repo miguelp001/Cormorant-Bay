@@ -35,6 +35,84 @@
 		</div>
 	</noscript>
 
+	<!-- Diegetic Field Notebook Toggle Button -->
+	<button id="btn-open-journal" class="btn-journal-toggle" title="Open Alana's Field Notebook">
+		<span class="btn-journal-icon">&#128221;</span>
+		<span class="btn-journal-text">Field Notebook</span>
+	</button>
+
+	<!-- Diegetic Field Notebook (Clue Journal) Overlay -->
+	<div id="journal-overlay" class="journal-overlay" style="display: none;">
+		<div class="journal-modal">
+			<header class="journal-header">
+				<div class="journal-title-bar">
+					<span class="journal-label">ALANA TAYLOR &bull; FIELD NOTEBOOK</span>
+					<button type="button" id="btn-close-journal" class="btn-journal-close" title="Close Notebook">&times;</button>
+				</div>
+				<nav class="journal-tabs">
+					<button type="button" class="tab-btn active" data-tab="clues">Field Notes (<span id="journal-clue-count">0</span>)</button>
+					<button type="button" class="tab-btn" data-tab="suspects">Suspect Cases</button>
+					<button type="button" class="tab-btn" data-tab="dossier">Alana's Dossier</button>
+				</nav>
+			</header>
+
+			<main class="journal-content">
+				<!-- TAB 1: Clues & Dual Readings -->
+				<section id="tab-clues" class="journal-tab-pane active">
+					<div id="journal-clues-list" class="journal-clues-grid">
+						<!-- Dynamic rendering of held clues -->
+					</div>
+				</section>
+
+				<!-- TAB 2: Suspects & Evidence Tiers -->
+				<section id="tab-suspects" class="journal-tab-pane">
+					<div id="journal-suspects-list" class="suspects-grid">
+						<!-- Dynamic rendering of Toby, Price, Kell, Creel -->
+					</div>
+				</section>
+
+				<!-- TAB 3: Alana's Dossier & Skills -->
+				<section id="tab-dossier" class="journal-tab-pane">
+					<div class="dossier-container">
+						<div class="dossier-section">
+							<h3>Registration &amp; Assignment</h3>
+							<p><strong>Reason for Visit:</strong> <span id="dossier-visit-reason">Loading...</span></p>
+							<p><strong>Town Scrutiny:</strong> <span id="dossier-heat-status">Normal</span></p>
+						</div>
+						<div class="dossier-section">
+							<h3>Core Competencies</h3>
+							<div class="dossier-skills-grid">
+								<div class="dossier-skill-card">
+									<span class="dossier-skill-name">Perception</span>
+									<strong id="dossier-val-perception">1</strong>
+								</div>
+								<div class="dossier-skill-card">
+									<span class="dossier-skill-name">Empathy</span>
+									<strong id="dossier-val-empathy">1</strong>
+								</div>
+								<div class="dossier-skill-card">
+									<span class="dossier-skill-name">Persuasion</span>
+									<strong id="dossier-val-persuasion">1</strong>
+								</div>
+								<div class="dossier-skill-card">
+									<span class="dossier-skill-name">Grit</span>
+									<strong id="dossier-val-grit">1</strong>
+								</div>
+							</div>
+						</div>
+						<div class="dossier-section">
+							<h3>Conviction</h3>
+							<p class="conviction-desc">Two stubborn moments to refuse failure. Reroll keeps the better result.</p>
+							<div class="conviction-pips" id="dossier-conviction-pips">
+								<!-- Dynamic pips -->
+							</div>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+	</div>
+
 	<!-- Diegetic Landing Card Overlay (Prologue Visitor Registration) -->
 	<div id="landing-card-overlay" class="landing-card-overlay" style="display: none;">
 		<div class="landing-card-modal">
