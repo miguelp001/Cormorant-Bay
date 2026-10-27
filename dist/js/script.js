@@ -460,7 +460,7 @@ monogatari.script({
 				},
 				'Ignore': {
 					'Text': 'Keep your eyes down on the notebook.',
-					'Do': 'jump arrival_dock'
+					'Do': 'jump ferry_title_drop'
 				}
 			}
 		}
@@ -473,13 +473,20 @@ monogatari.script({
 		'y Not cattle fencing. Whatever is kept in there has weight, and teeth.',
 		function () {
 			clue(this, 'saw_the_fence');
-			return 'jump arrival_dock';
+			return 'jump ferry_title_drop';
 		}
 	],
 
 	'ferry_watch_miss': [
 		'{{ferry_roll_line}}',
 		'y The diesel fumes wash back into the cabin as the boat turns. Sea spray blankets the pane, reducing the point to a blur of grey rock.',
+		'jump ferry_title_drop'
+	],
+
+	'ferry_title_drop': [
+		'show scene title_drop with fadeIn',
+		'y The ferry banks hard against the black swell as it clears the outer rocks.',
+		'y Out past the salt spray, Cormorant Point rises jagged and wind-torn into the gale—the gateway to the Bay, and six years of buried secrets.',
 		'jump arrival_dock'
 	],
 

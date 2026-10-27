@@ -82,7 +82,8 @@ monogatari.assets('scenes', {
 	'house_ext': 'bg_house_ext.jpg',
 	'dock_dawn': 'bg_dock_dawn.jpg',
 	'house_night': 'bg_house_night.jpg',
-	'point_dawn': 'bg_point_dawn.jpg'
+	'point_dawn': 'bg_point_dawn.jpg',
+	'title_drop': 'bg_title_drop.jpg'
 });
 
 // Music & Audio Bed
