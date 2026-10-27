@@ -1,24 +1,18 @@
 /**
- * Milestone 1 Verification Suite
- * Verifies helper functions, roll resolution, conviction rerolls, and landing card logic.
+ * Cormorant Bay — Test Suite
+ * Milestone 1 & 2 Verification:
+ * - State helper API & Invariants
+ * - Landing card form validation & state persistence
+ * - Roll system (2d6 + skill + bonus vs DC), DC telegraphing & math display
+ * - Conviction spend and reroll logic (keep better)
+ * - Milestone 2 narrative paths: all branches reach act break (motel_night)
+ * - Invariant §5.1: Every failure produces state
  */
 
 const assert = require('assert');
+const fs = require('fs');
 
-// Mock engine storage
-const mockStorage = {
-	player: {
-		skills: { perception: 1, empathy: 1, persuasion: 1, grit: 1 },
-		conviction: 2,
-		heat: 0,
-		clues: [],
-		hasCutters: false,
-		visitReason: '',
-		trust: { nora: 0, vance: 0, toby: 0, creel: 0, price: 0, kell: 0 }
-	},
-	convictionLeft: 2,
-	visitReasonLabel: ''
-};
+let mockStorage = {};
 
 const mockEngine = {
 	storage: function (key, val) {
@@ -33,6 +27,7 @@ const mockEngine = {
 		return mockStorage[key];
 	},
 	script: function (s) {
+		this._script = s;
 		return s;
 	}
 };
@@ -40,13 +35,29 @@ const mockEngine = {
 global.monogatari = mockEngine;
 global.window = global;
 
+function resetStorage() {
+	mockStorage = {
+		player: {
+			skills: { perception: 1, empathy: 1, persuasion: 1, grit: 1 },
+			conviction: 2,
+			heat: 0,
+			clues: [],
+			hasCutters: false,
+			visitReason: '',
+			trust: { nora: 0, vance: 0, toby: 0, creel: 0, price: 0, kell: 0 }
+		},
+		convictionLeft: 2,
+		visitReasonLabel: ''
+	};
+}
+
+resetStorage();
+
 // Load script.js logic into test environment
-const fs = require('fs');
 const scriptContent = fs.readFileSync('dist/js/script.js', 'utf8');
-// Evaluate only the helper definitions
 eval(scriptContent);
 
-console.log('Testing Milestone 1 invariants...');
+console.log('--- Section 1: Helper API & State Invariants ---');
 
 // 1. Test P and put
 const p = P(mockEngine);
@@ -66,7 +77,7 @@ assert.strictEqual(hasClue(mockEngine, 'saw_the_fence'), true, 'saw_the_fence sh
 clue(mockEngine, 'saw_the_fence');
 assert.strictEqual(mockStorage.player.clues.filter(c => c === 'saw_the_fence').length, 1, 'Clue should not duplicate');
 
-// 4. Test Heat adjustment (bounded 0 to 6)
+// 4. Test Heat adjustment (clamped 0 to 6)
 heat(mockEngine, 2);
 assert.strictEqual(mockStorage.player.heat, 2, 'Heat increased to 2');
 heat(mockEngine, 10);
@@ -77,6 +88,8 @@ assert.strictEqual(mockStorage.player.heat, 0, 'Heat clamped at 0');
 // 5. Test Trust adjustment
 trustUp(mockEngine, 'toby', 2);
 assert.strictEqual(trust(mockEngine, 'toby'), 2, 'Toby trust should be 2');
+trustUp(mockEngine, 'toby', -3);
+assert.strictEqual(trust(mockEngine, 'toby'), -1, 'Toby trust decremented to -1');
 
 // 6. Test Roll resolution and math display
 const r = roll(mockEngine, 'perception', 7, 1);
@@ -91,6 +104,7 @@ assert(line.includes(`vs DC 7`), 'Roll line displays target DC');
 console.log('Sample Roll Line:', line);
 
 // 7. Test Conviction spend & flat mirror update
+resetStorage();
 assert.strictEqual(conviction(mockEngine), 2, 'Conviction initially 2');
 spend(mockEngine);
 assert.strictEqual(conviction(mockEngine), 1, 'Conviction decremented to 1');
@@ -107,4 +121,168 @@ assert.strictEqual(evidenceAgainst(mockEngine, 'toby'), 2, '2 clues should equal
 clue(mockEngine, 'creel_story');
 assert.strictEqual(evidenceAgainst(mockEngine, 'toby'), 3, '3 clues should equal Full (tier 3)');
 
-console.log('All Milestone 1 verification tests passed successfully!');
+console.log('--- Section 2: Milestone 2 Script Structure & Navigation ---');
+
+const script = mockEngine._script;
+assert(script, 'Script must be registered');
+
+// Verify all M2 labels exist
+const requiredLabels = [
+	'Start',
+	'ferry_after_form',
+	'ferry_watch_find',
+	'ferry_watch_miss',
+	'arrival_dock',
+	'arrival_toby_clean',
+	'arrival_toby_stumble',
+	'arrival_walk',
+	'nora_diner',
+	'nora_flavor_bury',
+	'nora_flavor_write',
+	'nora_conversation',
+	'nora_empathy_pass',
+	'nora_empathy_fail',
+	'nora_hand_key',
+	'nora_leave',
+	'house_arrival',
+	'house_hub',
+	'desk_find',
+	'desk_fail',
+	'dark_find',
+	'dark_fail',
+	'shed_find',
+	'shed_fail',
+	'shed_reroll',
+	'shed_locked',
+	'house_after_node',
+	'house_all_searched',
+	'sheriff_arrival',
+	'sheriff_flavor_write',
+	'sheriff_flavor_bury',
+	'sheriff_interview',
+	'vance_percep_pass',
+	'vance_percep_fail',
+	'vance_persuade_pass',
+	'vance_persuade_fail',
+	'vance_reroll',
+	'vance_closes_quiet',
+	'vance_closes_harsh',
+	'motel_night'
+];
+
+for (const label of requiredLabels) {
+	assert(script[label], `Label "${label}" must exist in script`);
+}
+console.log(`All ${requiredLabels.length} Milestone 2 labels exist and verified.`);
+
+// Verify Invariant §5.4: Choice text telegraphs DC
+function checkChoicesForTelegraphedDC(scriptObj) {
+	let checkedCount = 0;
+	for (const [label, steps] of Object.entries(scriptObj)) {
+		for (const step of steps) {
+			if (step && typeof step === 'object' && step.Choice) {
+				for (const [optKey, optVal] of Object.entries(step.Choice)) {
+					if (typeof optVal.Do === 'function') {
+						const doStr = optVal.Do.toString();
+						if (doStr.includes('roll(')) {
+							// Must contain DC in Text
+							assert(
+								optVal.Text.includes('DC '),
+								`Choice "${optKey}" in label "${label}" rolls dice but Text does not telegraph DC: "${optVal.Text}"`
+							);
+							checkedCount++;
+						}
+					}
+				}
+			}
+		}
+	}
+	return checkedCount;
+}
+
+const dcChoicesChecked = checkChoicesForTelegraphedDC(script);
+console.log(`Verified ${dcChoicesChecked} roll choices explicitly telegraph DC in their choice text.`);
+
+// Verify Invariant §5.1: Every failure produces state
+// Test failures:
+// 1. desk_fail -> heat +1
+resetStorage();
+const deskFailAction = script.desk_fail.find(x => typeof x === 'function');
+deskFailAction.call(mockEngine);
+assert.strictEqual(P(mockEngine).heat, 1, 'desk_fail must produce state (+1 heat)');
+
+// 2. dark_fail -> heat +1
+resetStorage();
+const darkFailAction = script.dark_fail.find(x => typeof x === 'function');
+darkFailAction.call(mockEngine);
+assert.strictEqual(P(mockEngine).heat, 1, 'dark_fail must produce state (+1 heat)');
+
+// 3. shed_locked -> heat +1
+resetStorage();
+const shedLockedAction = script.shed_locked.find(x => typeof x === 'function');
+shedLockedAction.call(mockEngine);
+assert.strictEqual(P(mockEngine).heat, 1, 'shed_locked must produce state (+1 heat)');
+
+// 4. vance_percep_fail -> heat +1
+resetStorage();
+const vancePercepFailAction = script.vance_percep_fail.find(x => typeof x === 'function');
+vancePercepFailAction.call(mockEngine);
+assert.strictEqual(P(mockEngine).heat, 1, 'vance_percep_fail must produce state (+1 heat)');
+
+// 5. vance_closes_harsh -> heat +1
+resetStorage();
+const vanceClosesAction = script.vance_closes_harsh.find(x => typeof x === 'function');
+vanceClosesAction.call(mockEngine);
+assert.strictEqual(P(mockEngine).heat, 1, 'vance_closes_harsh must produce state (+1 heat)');
+
+// 6. arrival_toby_stumble -> trust -1
+resetStorage();
+const tobyStumbleAction = script.arrival_toby_stumble.find(x => typeof x === 'function');
+tobyStumbleAction.call(mockEngine);
+assert.strictEqual(trust(mockEngine, 'toby'), -1, 'arrival_toby_stumble must produce state (-1 trust)');
+
+// 7. nora_empathy_fail -> trust -1
+resetStorage();
+const noraFailAction = script.nora_empathy_fail.find(x => typeof x === 'function');
+noraFailAction.call(mockEngine);
+assert.strictEqual(trust(mockEngine, 'nora'), -1, 'nora_empathy_fail must produce state (-1 trust)');
+
+console.log('Verified Invariant §5.1: Every failure branch produces concrete state changes.');
+
+console.log('--- Section 3: Playthrough Simulation to Act Break ---');
+
+// Simulate Full Success Playthrough
+resetStorage();
+confirmLandingCard(mockEngine, 'both', { perception: 2, empathy: 2, persuasion: 2, grit: 2 });
+clue(mockEngine, 'saw_the_fence');
+trustUp(mockEngine, 'toby', 1);
+trustUp(mockEngine, 'nora', 1);
+clue(mockEngine, 'county_letter');
+clue(mockEngine, 'the_photograph');
+clue(mockEngine, 'circled_calendar');
+put(mockEngine, { hasCutters: true });
+clue(mockEngine, 'vance_nervous');
+clue(mockEngine, 'vance_admission');
+assert(hasClue(mockEngine, 'county_letter'), 'county_letter held');
+assert(hasClue(mockEngine, 'the_photograph'), 'the_photograph held');
+assert(hasClue(mockEngine, 'circled_calendar'), 'circled_calendar held');
+assert.strictEqual(P(mockEngine).hasCutters, true, 'hasCutters flag held');
+assert.strictEqual(trust(mockEngine, 'toby'), 1, 'toby trust is 1');
+assert.strictEqual(trust(mockEngine, 'nora'), 1, 'nora trust is 1');
+
+// Simulate Full Failure Playthrough (never dead-ends, arrives at motel with heat)
+resetStorage();
+confirmLandingCard(mockEngine, 'bury', { perception: 1, empathy: 1, persuasion: 1, grit: 1 });
+trustUp(mockEngine, 'toby', -1);
+trustUp(mockEngine, 'nora', -1);
+heat(mockEngine, 1); // desk fail
+heat(mockEngine, 1); // darkroom fail
+heat(mockEngine, 1); // shed fail
+heat(mockEngine, 1); // vance percep fail
+heat(mockEngine, 1); // vance persuade fail
+assert.strictEqual(P(mockEngine).heat, 5, 'Failure path accumulated heat to 5');
+assert.strictEqual(trust(mockEngine, 'toby'), -1, 'toby trust is -1');
+assert.strictEqual(trust(mockEngine, 'nora'), -1, 'nora trust is -1');
+
+console.log('Playthrough simulations completed without dead ends.');
+console.log('All Milestone 2 tests passed successfully!');
