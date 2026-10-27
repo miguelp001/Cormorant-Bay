@@ -1,7 +1,7 @@
 /**
  * Cormorant Bay — script.js
  * Mechanics Helpers and Narrative Script
- * Milestones 1, 2, 3 & 4: Prologue through Act Three (Days 1–5).
+ * Complete Narrative: Milestones 1–5 (Prologue through all 11 Endings).
  */
 
 'use strict';
@@ -235,7 +235,7 @@ window.evidenceAgainst = evidenceAgainst;
 window.confirmLandingCard = confirmLandingCard;
 
 // =============================================================================
-// Monogatari Narrative Script: Milestones 1–4
+// Monogatari Narrative Script: Milestones 1–5
 // =============================================================================
 
 monogatari.script({
@@ -1434,7 +1434,6 @@ monogatari.script({
 		}
 	],
 
-	// --- Branch A: Heat 5 Death Attack (Invariant §5.8 & Grit DC 12 Death Check) ---
 	'day5_attack': [
 		'y In Room 4 of the motel, the lights suddenly flicker and die with a high electrical whine.',
 		'y The silence is shattered by the explosive crash of splintering glass in the bathroom.',
@@ -1510,7 +1509,6 @@ monogatari.script({
 		'end'
 	],
 
-	// --- Branch B: Heat < 5 Moon Night Options ---
 	'day5_moon_choice': [
 		'y You stand by the window of Room 4. The full moon hangs like a polished coin above the bay.',
 		'y You have three choices for how to spend this night before the ferry arrives tomorrow.',
@@ -1608,14 +1606,269 @@ monogatari.script({
 	],
 
 	// =========================================================================
-	// 16. ACT FOUR (DAY 6): THE FERRY ARRIVAL & ACCUSATION GATEWAY
+	// 16. ACT FOUR (DAY 6): THE ACCUSATION MATRIX & ENDINGS
 	// =========================================================================
 	'day6_morning': [
-		'y Friday morning. The horn of the ferry echoes across the grey water of Cormorant Bay.',
-		'y The crossing boat has arrived to take passengers back to the mainland.',
-		'y On the dock apron, the town has gathered: Ruth Vance in uniform, Nora with her apron folded over her arm, Merritt Kell beside his car, Doyle Price smoking by his truck, and Pastor Creel standing beside Toby Rook.',
-		'y Everyone is watching you walk down the gangway with your notebook in your hand.',
-		'y The moment of accusation has arrived.',
+		'y Friday morning. The low horn of the ferry vibrates across the grey water of Cormorant Bay.',
+		'y Down at the commercial pier, the town has gathered in the light drizzle: Ruth Vance in uniform, Nora with her hands tucked in her coat, Merritt Kell standing by his car, Doyle Price leaning against his flatbed, and Pastor Creel standing beside Toby Rook.',
+		'y The gangway is down. The diesel engines rumble in idle.',
+		'y Sheriff Vance steps forward onto the wet planks: "The ferry departs in twenty minutes, Alana. If you have an official statement to file before you board, speak it now."',
+		'y Everyone is watching. Your notebook is open in your hand.',
+		'jump accuse_hub'
+	],
+
+	'accuse_hub': [
+		{
+			'Choice': {
+				'AccuseToby': {
+					'Text': 'Name Toby Rook as the beast that killed your father.',
+					'Do': function () {
+						const tier = evidenceAgainst(this, 'toby');
+						if (tier === 3) {
+							return 'jump accuse_toby_full_fork';
+						} else if (tier === 2) {
+							return 'jump ending_toby_partial';
+						}
+						return 'jump toby_thin';
+					}
+				},
+				'AccusePrice': {
+					'Text': 'Accuse Doyle Price of luring Eli out and killing him.',
+					'Do': function () {
+						const tier = evidenceAgainst(this, 'price');
+						if (tier === 3) {
+							return 'jump ending_price_full';
+						} else if (tier === 2) {
+							return 'jump price_partial';
+						}
+						return 'jump price_thin';
+					}
+				},
+				'AccuseKell': {
+					'Text': 'Accuse Merritt Kell of orchestrating the fatal attack to protect his cannery.',
+					'Do': function () {
+						const tier = evidenceAgainst(this, 'kell');
+						if (tier === 3) {
+							return 'jump ending_kell_full';
+						} else if (tier === 2) {
+							return 'jump ending_kell_partial';
+						}
+						return 'jump kell_thin';
+					}
+				},
+				'AccuseCreel': {
+					'Text': 'Accuse Pastor Abel Creel of maintaining a deadly menace under seal of confession.',
+					'Do': function () {
+						const tier = evidenceAgainst(this, 'creel');
+						if (tier === 3) {
+							return 'jump ending_creel_ruin';
+						} else if (tier === 2) {
+							return 'jump creel_partial';
+						}
+						return 'jump creel_thin';
+					}
+				},
+				'Nobody': {
+					'Text': 'Close the notebook and walk up the gangway without making an accusation.',
+					'Do': function () {
+						const totalClues = P(this).clues ? P(this).clues.length : 0;
+						if (totalClues >= 6) {
+							return 'jump leave_full';
+						} else if (totalClues >= 3) {
+							return 'jump leave_partial';
+						}
+						return 'jump ending_leave';
+					}
+				}
+			}
+		}
+	],
+
+	// -------------------------------------------------------------------------
+	// TOBY ROOK ENDINGS
+	// -------------------------------------------------------------------------
+	'toby_thin': [
+		'y "It was Toby Rook," you say, your voice cutting through the mist. "He\'s what killed my father."',
+		'y Silence falls over the pier. Nobody gasps. Nobody even argues.',
+		'y Nora steps quietly in front of the boy, placing her hand on his trembling shoulder. Ruth Vance doesn\'t even reach for her pen.',
+		'vance "Toby was working the ice machine until dawn on Thursday, Alana. We all saw him. You\'re exhausted. Get on the boat."',
+		'y The deckhand takes your ticket. You walk up the gangway while the town watches in pitying silence.',
+		'y Ending 4: Accuse and be disbelieved. Nobody even argues.',
+		'end'
+	],
+
+	'ending_toby_partial': [
+		'y You step forward and lay out your pieces: the telephoto photo of the wire run and Eli\'s moon calendar.',
+		'y "He was in the run," you say. "Six days every month."',
+		'y Vance takes the papers. Her face goes entirely bloodless. She looks at Creel, then turns slowly to Toby.',
+		'toby "It\'s okay, Sheriff," Toby whispers. His voice doesn\'t shake anymore. "It\'s okay. I\'m tired of running."',
+		'y He offers his wrists. Relief floods his young face, and that relief is far more horrifying than guilt.',
+		'y You board the ferry as two state patrol cruisers arrive down the hill. You did the right thing, and everyone in Cormorant Bay will hate you for the rest of your life.',
+		'y Ending 5: Arrested underprepared. He goes quietly. Relief in his face, which is worse.',
+		'end'
+	],
+
+	'accuse_toby_full_fork': [
+		'y You present the complete, airtight case: the photograph of the beast, the circled calendar, and Pastor Creel\'s testimony.',
+		'y The truth is laid out on the salt-stained wood. The town stands paralyzed.',
+		'y Toby stares down at his boots, weeping silently. Nora looks at you with terror in her eyes. Creel bows his head in prayer.',
+		'y The moment has arrived. You hold his life in your hand.',
+		{
+			'Choice': {
+				'Tell': {
+					'Text': '"Take him in, Ruth. Call the county marshals."',
+					'Do': 'jump ending_toby_full'
+				},
+				'Bury': {
+					// Invariant §5.7: The Mercy route is gated on trust, not evidence
+					'Text': '"Don\'t write it down."',
+					'Condition': function () {
+						return trust(this, 'toby') >= 1
+							&& trust(this, 'nora') >= 1
+							&& trust(this, 'creel') >= 1;
+					},
+					'Do': 'jump ending_mercy'
+				}
+			}
+		}
+	],
+
+	'ending_toby_full': [
+		'y "Ruth. Call the county. The coroner was lying."',
+		'y Vance looks at the files, then closes her eyes. When she opens them, she takes the cuffs from her belt.',
+		'y By noon, four federal vehicles and a wildlife containment unit have blocked off Commercial Street. Toby is loaded into a steel transport pod, screaming into his collar.',
+		'y Your feature article runs on the front page three weeks later. An award-winning investigation. The town never speaks your name again.',
+		'y You are entirely correct, and you are utterly alone.',
+		'y Ending 6: The county comes. The truth, and the cost. You are certain, and alone.',
+		'end'
+	],
+
+	'ending_mercy': [
+		'y You look down at the open notebook. You see Toby\'s childhood lemonade glass, Nora\'s warm soup, Creel\'s kneeling prayers.',
+		'y You close the cover. You slide the pen into your pocket.',
+		'y "My father died of an animal attack in the woods," you say clearly to the gathered crowd. "Just like the coroner wrote."',
+		'y Nora covers her face, weeping with ragged, overwhelming relief. Creel whispers a trembling prayer of thanksgiving. Toby looks up, his eyes wide and wet with wonder.',
+		'y He will not be cured. Next month the moon will rise again, and the town will have to guard the wire once more. But you chose the boy over the story.',
+		'y Ending 7: Save him. Not cured. You chose the boy anyway.',
+		'end'
+	],
+
+	// -------------------------------------------------------------------------
+	// DOYLE PRICE ENDINGS
+	// -------------------------------------------------------------------------
+	'price_thin': [
+		'y "Doyle Price killed him," you tell Vance. "He was at the house."',
+		'price "You\'re full of rot, lady! I was drinking at the tavern!"',
+		'y Without tire tracks or boot evidence, Vance shakes her head: "Doyle\'s a drunk, Alana, not a murderer. Get on the boat."',
+		'y Price spits in the water and laughs as you board.',
+		'y Questioned and released. You leave with nothing.',
+		'end'
+	],
+
+	'price_partial': [
+		'y You produce Toby\'s testimony and the sighting of Price\'s green flatbed at the point.',
+		'y Price turns red, sputtering curses: "I opened the gate because Kell paid me! I never touched the old bastard!"',
+		'y Vance snaps the cuffs on him: "Manslaughter and reckless endangerment, Doyle. Let\'s go."',
+		'y Price is hauled away screaming Kell\'s name, but the real beast behind the fence remains unspoken.',
+		'y Ending: Questioned and arrested for murder. He opened a gate.',
+		'end'
+	],
+
+	'ending_price_full': [
+		'y You lay out the truck timeline, the fresh clay on his boots, and the tampered cannery latch.',
+		'y An airtight case. The town turns on Doyle with ferocious, relieved fury. Vance arrests him on the dock.',
+		'y Four years later, in your city apartment, an envelope arrives postmarked from the state penitentiary.',
+		'y A notice of inmate death: Doyle Price died of pneumonia in cell block C. Enclosed is a penciled note from his final week: *"I only opened a gate to scare him, Alana. I never touched a hair on his head. But twelve people in town needed someone to hang, and your notebook gave them a name. God forgive you."*',
+		'y Ending 8: Condemn an innocent man; learn it four years later.',
+		'end'
+	],
+
+	// -------------------------------------------------------------------------
+	// MERRITT KELL ENDINGS
+	// -------------------------------------------------------------------------
+	'kell_thin': [
+		'y You point at Merritt Kell: "He arranged it to silence the health board complaint!"',
+		'kell "A tragic, defamatory accusation from a grieving daughter," Kell sighs smoothly.',
+		'y Vance shakes her head and waves you up the gangway. Kell sips his coffee and winks as the boat pulls away.',
+		'y Ending: He laughs. You leave.',
+		'end'
+	],
+
+	'ending_kell_partial': [
+		'y You present Eli\'s carbon copy complaint and the evidence of the tampered cannery gate.',
+		'y The county opens an investigation into municipal zoning and industrial lease safety. Kell\'s cannery operations are suspended by court order.',
+		'y The cannery closes. Forty families in Cormorant Bay lose their livelihood before winter.',
+		'y Kell liquidates his holdings and moves to Vancouver with his fortune untouched.',
+		'y Ending: County investigates; the cannery dies.',
+		'end'
+	],
+
+	'ending_kell_full': [
+		'y You present the carbon complaint letter, the tampered gate, and Kell\'s recorded verbal threat.',
+		'y Faced with direct criminal conspiracy, the state attorney general indicts Kell on felony endangerment and criminal negligence causing death.',
+		'y Kell takes a three-year plea deal to avoid a public trial. He spends eighteen months in a minimum-security facility.',
+		'y He takes the fall for what he did do — and the real secret of Cormorant Bay stays buried forever behind the timber line.',
+		'y Ending 10: Catch the villain who wasn\'t the story.',
+		'end'
+	],
+
+	// -------------------------------------------------------------------------
+	// PASTOR ABEL CREEL ENDINGS
+	// -------------------------------------------------------------------------
+	'creel_thin': [
+		'y "Pastor Creel is responsible!" you declare. "He sheltered the killer!"',
+		'y The town turns on you in cold disgust. Nora steps back with a look of revulsion.',
+		'y "Abel Creel has buried our dead for forty years," an old fisherman mutters. "Shame on you, Alana."',
+		'y You are escorted up the gangway in total disgrace.',
+		'y Ending: Town turns on you. Escape, not resolution.',
+		'end'
+	],
+
+	'creel_partial': [
+		'y You reveal Vance\'s nervous admissions and Creel\'s secret visits to the cannery run.',
+		'y A parish scandal explodes across the diocese. The bishop revokes Creel\'s holy orders; Saint Jude in the Pines is shuttered and deconsecrated.',
+		'y Creel leaves Cormorant Bay on a grey bus, clutching an old suitcase with his head bowed.',
+		'y Ending: Scandal; the church collapses.',
+		'end'
+	],
+
+	'ending_creel_ruin': [
+		'y You present the audio confession log, Vance\'s admission, and Creel\'s own spoken testimony.',
+		'y The evidence is inescapable. Faced with the tape, Pastor Creel refuses to utter Toby Rook\'s name. Instead, he steps forward and falsely claims sole responsibility: he bred vicious animals on church land and failed to secure them.',
+		'y He confesses to manslaughter to shield the boy from the law. He is defrocked, convicted, and sentenced to ten years.',
+		'y You ruined a good, exhausted man who was never the murderer.',
+		'y Ending 9: Ruin a good man who was never the murderer.',
+		'end'
+	],
+
+	// -------------------------------------------------------------------------
+	// NOBODY / WALK AWAY ENDINGS
+	// -------------------------------------------------------------------------
+	'ending_leave': [
+		'y You close the notebook. You don\'t say a word.',
+		'y You hand your ticket to the deckhand, walk up the metal gangway, and stand at the stern rail as the engines throb.',
+		'y The town shrinks into the mist — pine, salt, and black cedar shingles.',
+		'y You solved nothing. You escaped.',
+		'y Ending 1: Leave with nothing. Escape, not resolution.',
+		'end'
+	],
+
+	'leave_partial': [
+		'y You walk up the gangway without a word, holding your partial notes in your pocket.',
+		'y In the city, you spend three months drafting a 10,000-word investigative piece for the magazine.',
+		'y The legal department reviews it, demands named on-record sources that you don\'t possess, and kills the article.',
+		'y The draft sits in your bottom filing cabinet for eleven years, yellowing at the staples.',
+		'y Ending 2: Write it; the magazine kills it; the draft sits in a drawer for eleven years.',
+		'end'
+	],
+
+	'leave_full': [
+		'y You keep your silence on the dock, but when you return to the mainland, you publish everything: the photographs, the gate, the letters, the moon clock.',
+		'y The story explodes on the front page. A state commission descends upon Cormorant Bay with search warrants and cameras.',
+		'y They scour the point. They inspect the empty cannery and the chain-link run.',
+		'y They find rusted wire, salt air, and thirty people who swear with completely straight faces that they never saw an animal in their lives.',
+		'y No wolf is ever found.',
+		'y Ending 3: Write it; published; inquiry; no wolf found.',
 		'end'
 	]
 });
