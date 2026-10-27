@@ -1,7 +1,7 @@
 /**
  * Cormorant Bay — script.js
  * Mechanics Helpers and Narrative Script
- * Milestones 1, 2 & 3: Prologue through Act One (Days 1–3).
+ * Milestones 1, 2, 3 & 4: Prologue through Act Three (Days 1–5).
  */
 
 'use strict';
@@ -235,7 +235,7 @@ window.evidenceAgainst = evidenceAgainst;
 window.confirmLandingCard = confirmLandingCard;
 
 // =============================================================================
-// Monogatari Narrative Script: Milestones 1, 2 & 3
+// Monogatari Narrative Script: Milestones 1–4
 // =============================================================================
 
 monogatari.script({
@@ -802,7 +802,6 @@ monogatari.script({
 		}
 	],
 
-	// --- Toby Dock Scene at Night (Invariant §5.7: the only path to trust.toby +1) ---
 	'toby_night_pass': [
 		'{{toby_night_roll_line}}',
 		'y The wind off the sound is needle-sharp, but you pull your collar tight and walk steady along the wet planks.',
@@ -1047,7 +1046,7 @@ monogatari.script({
 		'price "You Taylor people think you own this county. Your old man was crazy and you\'re no better. Get off the dock before I call Ruth Vance!"',
 		'y Two fishermen on the adjacent trawler turn and watch the altercation with cold hostility.',
 		function () {
-			heat(this, 2); // Invariant §7.4: Trespassing / altercation = +2 Heat
+			heat(this, 2);
 		},
 		{
 			'Choice': {
@@ -1111,7 +1110,7 @@ monogatari.script({
 		'y For an hour, the town\'s suspicion recedes. Nora refills your coffee and squeezes your hand.',
 		function () {
 			trustUp(this, 'nora', 1);
-			heat(this, -1); // Heat reduction per §7.4
+			heat(this, -1);
 			return 'jump day3_morning';
 		}
 	],
@@ -1122,7 +1121,7 @@ monogatari.script({
 		'nora "Eat your soup before it goes cold, child."',
 		'y She wipes down the counter quietly. Still, sitting in the warm light under the town\'s eyes lowers the tension around you.',
 		function () {
-			heat(this, -1); // Heat reduction for social presence
+			heat(this, -1);
 			return 'jump day3_morning';
 		}
 	],
@@ -1246,7 +1245,7 @@ monogatari.script({
 		function () {
 			trustUp(this, 'creel', 1);
 			trustUp(this, 'nora', 1);
-			heat(this, -1); // Funeral Heat reduction per §7.4
+			heat(this, -1);
 			return 'jump vance_drawer_scene';
 		}
 	],
@@ -1256,7 +1255,7 @@ monogatari.script({
 		'y You stare rigidly ahead, refusing to look anyone in the eye. The coldness radiating from you is palpable.',
 		'y When the dirt thuds against the pine lid, the townspeople walk past you with averted eyes and hurried nods.',
 		function () {
-			heat(this, -1); // Social scene still cools town alarm slightly
+			heat(this, -1);
 			return 'jump vance_drawer_scene';
 		}
 	],
@@ -1354,6 +1353,269 @@ monogatari.script({
 		'y Tomorrow is Thursday. The moon clock reaches its zenith tomorrow night.',
 		'y The pieces are on the board, and the town knows you are holding them.',
 		'y End of Act One.',
+		'jump day4_church'
+	],
+
+	// =========================================================================
+	// 14. ACT TWO (DAY 4): THE CHURCH REVEAL
+	// =========================================================================
+	'day4_church': [
+		'y Thursday morning. Cormorant Bay has pulled into itself like a snail behind an iron shell.',
+		'y Heavy storm shutters are battened over the lower windows of every house along the road.',
+		'y At Saint Jude in the Pines, the arched oak door stands unlocked. Inside, cold damp air smells of tallow candles and old cedar.',
+		'y Pastor Abel Creel kneels alone at the communion rail, his hands clasped over a worn silver crucifix.',
+		'y He does not turn around when your boots echo on the floorboards.',
+		'creel "I heard your car on the hill, Alana. I have been praying for your departure."',
+		{
+			'Choice': {
+				'ConfrontCreel': {
+					'Text': 'Confront him with the full pattern of silence. (Persuasion — he cannot break the seal, but he cannot lie, DC 9)',
+					'Do': function () {
+						const r = roll(this, 'persuasion', 9);
+						this.storage('creel_reveal_roll_line', rollLine(r));
+						return r.success ? 'jump day4_creel_clean' : 'jump day4_creel_guarded';
+					}
+				},
+				'DemandDirect': {
+					'Text': '"Tell me what killed my father, Abel."',
+					'Do': 'jump day4_creel_guarded'
+				}
+			}
+		}
+	],
+
+	'day4_creel_clean': [
+		'{{creel_reveal_roll_line}}',
+		'y You speak without malice, your voice gentle in the cavernous nave: "You built a cage behind the cannery, Abel. Not for beasts. For a boy who thought he was damned."',
+		'y Creel bows his head until his forehead touches the polished rail. A slow, shuddering sob escapes him.',
+		'creel "He was thirteen, Alana. Bitten on the point during salmon run. He came to this altar drenched in sea water and terrified he was going to hell."',
+		'creel "Nora fed him. Ruth buried the records. Kell gave him the run so he could be kept off the streets during the change. We thought... God help us, we thought we were loving him."',
+		'creel "Three weeks ago your father started photographing the wire. Kell told Doyle to unhook the latch to scare Eli off. It was a full moon. Toby didn\'t know who was in the yard until he tasted the blood."',
+		function () {
+			clue(this, 'creel_story');
+			trustUp(this, 'creel', 1);
+			return 'jump day4_name';
+		}
+	],
+
+	'day4_creel_guarded': [
+		'{{creel_reveal_roll_line}}',
+		'y "I have the complaint letter, Abel. I have the boot prints and the photographs. Who is behind the wire?"',
+		'y Creel grips his crucifix until his knuckles whiten, but his voice breaks with agonizing sorrow.',
+		'creel "I cannot violate the seal of confession, Alana. But look at the calendar in your father\'s shed. Look at the cage Merritt Kell built."',
+		'creel "A boy who was thirteen years old and had nobody to protect him. We thought we could tame the dark with silence. And when the gate was opened three weeks ago, that silence killed your father."',
+		function () {
+			clue(this, 'creel_story');
+			heat(this, 1);
+			return 'jump day4_name';
+		}
+	],
+
+	'day4_name': [
+		'y The truth hangs in the cold air between you: Toby Rook is the wolf.',
+		'y Eli died because Doyle Price opened the gate on Kell\'s orders, and Toby was the beast let loose.',
+		'y The coroner\'s report was technically accurate: an animal attack. Everyone in Cormorant Bay is guilty of something real.',
+		'creel "Tonight the moon is full again, Alana. Stay in your room. Tomorrow the ferry comes, and you can decide what this town deserves."',
+		'jump day5_thursday_start'
+	],
+
+	// =========================================================================
+	// 15. ACT THREE (DAY 5): THE MOON & THE ATTACK
+	// =========================================================================
+	'day5_thursday_start': [
+		'y Thursday night. The full moon climbs above the jagged ridge, burning silver through ragged tears in the storm clouds.',
+		'y Outside, the rain has stopped. The absolute silence across Cormorant Bay is deafening — no cars, no dogs, no voices.',
+		function () {
+			// Invariant §5.8: Heat >= 5 triggers the attack
+			if (P(this).heat >= 5) {
+				return 'jump day5_attack';
+			}
+			return 'jump day5_moon_choice';
+		}
+	],
+
+	// --- Branch A: Heat 5 Death Attack (Invariant §5.8 & Grit DC 12 Death Check) ---
+	'day5_attack': [
+		'y In Room 4 of the motel, the lights suddenly flicker and die with a high electrical whine.',
+		'y The silence is shattered by the explosive crash of splintering glass in the bathroom.',
+		'y A blast of freezing air and wet timber smell fills the dark room. In the hallway doorway, a massive silhouette blocks the light from the moon.',
+		'y Broad shoulders, elongated limbs, jaws dripping saliva, yellow eyes blazing with feverish agony.',
+		'y The wolf has come for you.',
+		{
+			'Choice': {
+				'Survive': {
+					'Text': 'Throw the heavy oak dresser across the door and dive for the steel lamp. (Grit — survival instinct in the pitch dark, DC 12)',
+					'Do': function () {
+						const r = roll(this, 'grit', 12);
+						this.storage('death_roll_line', rollLine(r));
+						return r.success ? 'jump day5_attack_survive' : 'jump day5_attack_fail';
+					}
+				}
+			}
+		}
+	],
+
+	'day5_attack_survive': [
+		'{{death_roll_line}}',
+		'y You heave with all your weight, slamming the corner of the heavy dresser into the creature\'s chest.',
+		'y In the same motion, you swing the heavy steel lamp across its snout with a dull, ringing crack.',
+		'y The beast lets out a sickening, half-human yelp of pain. It scrambles backward across the shattered glass and leaps through the window into the cedar thicket.',
+		'y You stand in the freezing dark, your hands shaking violently, breathing in the smell of ozone and wet wolf fur.',
+		'y You saw it with your own eyes. You survived the beast.',
+		function () {
+			clue(this, 'saw_the_wolf');
+			return 'jump day6_morning';
+		}
+	],
+
+	'day5_attack_fail': [
+		'{{death_roll_line}}',
+		'y The beast hits you with the weight of an anvil. Claws shred through your jacket; teeth graze your collarbone in the suffocating dark.',
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Claw for the lamp with dying fury. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump day5_attack_reroll';
+					}
+				},
+				'Surrender': {
+					'Text': 'The darkness takes you.',
+					'Do': 'jump day5_death'
+				}
+			}
+		}
+	],
+
+	'day5_attack_reroll': [
+		'y You refuse to die in this room. With your last breath of stubborn life, you gouge your fingers into its muzzle and heave.',
+		function () {
+			const r = rerollWithConviction(this, 'grit', 12);
+			this.storage('death_roll_line', rollLine(r));
+			return r.success ? 'jump day5_attack_survive' : 'jump day5_death';
+		}
+	],
+
+	'day5_death': [
+		'{{death_roll_line}}',
+		'y The teeth find bone. The salt smell fills your throat.',
+		'y The coroner\'s report on Friday morning took two hours to sign.',
+		'y *Animal attack. Second fatal occurrence in one week. No further inquiry.*',
+		'y You never made it to the ferry.',
+		'y Ending 11: The only true loss. The game told you twice.',
+		'end'
+	],
+
+	// --- Branch B: Heat < 5 Moon Night Options ---
+	'day5_moon_choice': [
+		'y You stand by the window of Room 4. The full moon hangs like a polished coin above the bay.',
+		'y You have three choices for how to spend this night before the ferry arrives tomorrow.',
+		{
+			'Choice': {
+				'Point': {
+					'Text': 'Stalk the cannery perimeter wire in the moonlight. (Perception — search the shadows of the run, DC 11)',
+					'Do': function () {
+						const r = roll(this, 'perception', 11);
+						this.storage('point_moon_roll_line', rollLine(r));
+						return r.success ? 'jump day5_point_wolf' : 'jump day5_point_blur';
+					}
+				},
+				'Vigil': {
+					'Text': 'Join Pastor Creel at Saint Jude in the Pines for the midnight vigil.',
+					'Do': 'jump day5_vigil'
+				},
+				'Stay': {
+					'Text': 'Bolt your door, draw the blinds, and wait for morning in your room.',
+					'Do': 'jump day5_stay'
+				}
+			}
+		}
+	],
+
+	'day5_point_wolf': [
+		'{{point_moon_roll_line}}',
+		'y You slip through the trees along the western spit. Under the silver flood of the moon, you reach the cannery fence.',
+		'y Behind the chain link, an eight-foot shape paces the mud. Grey-black fur, ribcage expanding in deep, ragged breaths.',
+		'y It stops. It turns its massive head directly toward you.',
+		'y Under the amber reflection of the moonlight, you see the eyes: terrified, pained, and unmistakably Toby Rook.',
+		'y It doesn\'t charge. It whines low in its throat and turns back into the hemlocks.',
+		function () {
+			clue(this, 'saw_the_wolf');
+			return 'jump day6_morning';
+		}
+	],
+
+	'day5_point_blur': [
+		'{{point_moon_roll_line}}',
+		'y Fog rolls across the spit, blinding your flashlight. You hear heavy panting and the rattle of wire, but see only thrashing shadows.',
+		'y A cannery floodlight snaps on; a siren gives two short blasts from the cannery office.',
+		'y You flee back into the timber before you are cornered.',
+		function () {
+			heat(this, 1);
+		},
+		{
+			'Choice': {
+				'Push': {
+					'Text': 'Circle back to the wire. (Conviction — {{convictionLeft}} remaining)',
+					'Condition': function () {
+						return conviction(this) > 0;
+					},
+					'Do': function () {
+						spend(this);
+						return 'jump day5_point_reroll';
+					}
+				},
+				'Retreat': {
+					'Text': 'Retreat to the motel.',
+					'Do': 'jump day6_morning'
+				}
+			}
+		}
+	],
+
+	'day5_point_reroll': [
+		'y You drop to your stomach in the wet moss, crawling toward the fence line.',
+		function () {
+			const r = rerollWithConviction(this, 'perception', 11);
+			this.storage('point_moon_roll_line', rollLine(r));
+			return r.success ? 'jump day5_point_wolf' : 'jump day6_morning';
+		}
+	],
+
+	'day5_vigil': [
+		'y You spend the night in Saint Jude in the Pines. Candles flicker on the altar.',
+		'y Creel kneels in the center aisle, whispering prayers of absolution into the empty church.',
+		'y You sit in the rear pew, keeping watch while the hours tick past. There is no violence here, only shared sorrow.',
+		function () {
+			trustUp(this, 'creel', 1);
+			clue(this, 'confession_heard');
+			return 'jump day6_morning';
+		}
+	],
+
+	'day5_stay': [
+		'y You barricade the motel door with a chair and sit beneath the lamp with your coat on.',
+		'y Around two in the morning, a long, low howl echoes from the bluffs above the town. It isn\'t a dog.',
+		'y You sit in the dark until the dawn begins to grey the window panes.',
+		function () {
+			heat(this, 1);
+			return 'jump day6_morning';
+		}
+	],
+
+	// =========================================================================
+	// 16. ACT FOUR (DAY 6): THE FERRY ARRIVAL & ACCUSATION GATEWAY
+	// =========================================================================
+	'day6_morning': [
+		'y Friday morning. The horn of the ferry echoes across the grey water of Cormorant Bay.',
+		'y The crossing boat has arrived to take passengers back to the mainland.',
+		'y On the dock apron, the town has gathered: Ruth Vance in uniform, Nora with her apron folded over her arm, Merritt Kell beside his car, Doyle Price smoking by his truck, and Pastor Creel standing beside Toby Rook.',
+		'y Everyone is watching you walk down the gangway with your notebook in your hand.',
+		'y The moment of accusation has arrived.',
 		'end'
 	]
 });
